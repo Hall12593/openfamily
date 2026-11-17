@@ -927,7 +927,7 @@ export default MapView;
 function TrafficOverlay(): null {
   const map = useMap();
   useEffect(() => {
-    const layer = new TrafficTileLayer({ attribution: "© TomTom", maxNativeZoom: 18, opacity: 0.85, zIndex: 5 });
+    const layer = new TrafficTileLayer({ attribution: "© TomTom", maxNativeZoom: 19, opacity: 0.85, zIndex: 5 });
     layer.addTo(map);
     return () => {
       layer.remove();
