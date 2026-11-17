@@ -314,7 +314,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                   TextButton(
                     onPressed: _requesting ? null : _notNow,
                     child: Text(
-                      _steps[_index].optional ? 'Skip (optional)' : 'Not now',
+                      _steps[_index].optional ? context.l10n.skipOptional : context.l10n.actionNotNow,
                     ),
                   ),
                 ],
@@ -423,12 +423,10 @@ class _PermissionStepView extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   permanentlyDenied
-                      ? 'This permission is permanently denied. Tap "Open Settings" '
-                          'below to enable it.'
+                      ? context.l10n.permDeniedForever
                       : needsManualSettings
-                          ? 'On iOS, choose "Always Allow" in Settings to enable '
-                              'background tracking. Tap "Open Settings" below.'
-                          : 'You can enable this later in Settings.',
+                          ? context.l10n.permIosAlways
+                          : context.l10n.permEnableLater,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 13, color: AppColors.statusOrange),

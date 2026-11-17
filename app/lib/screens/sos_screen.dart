@@ -216,10 +216,8 @@ class _SosScreenState extends State<SosScreen> {
           title: Text(context.l10n.sendSosQuestion),
           content: Text(
             _smsConfigured
-                ? 'This alerts your family and emergency contacts with your '
-                    'location. Use Practice if you only want to try the countdown.'
-                : 'This alerts your family with your location. Use Practice '
-                    'if you only want to try the countdown.',
+                ? context.l10n.sosExplainerWithContacts
+                : context.l10n.sosExplainer,
           ),
           actions: [
             TextButton(
@@ -293,7 +291,7 @@ class _SosScreenState extends State<SosScreen> {
       if (!mounted) return;
       setState(() {
         _phase = _SosPhase.idle;
-        _error = 'Couldn\'t send SOS. Please try again.';
+        _error = context.l10n.sosFailed;
       });
     }
   }
@@ -308,8 +306,7 @@ class _SosScreenState extends State<SosScreen> {
 
   String _sendErrorMessage(ApiException e) {
     if (e.status == 429) {
-      return 'An SOS was already sent recently. Wait a couple of minutes, '
-          'or tap I\'m safe if that alert is still active.';
+      return context.l10n.sosAlreadySent;
     }
     return e.message;
   }
@@ -469,10 +466,8 @@ class _SosScreenState extends State<SosScreen> {
           title: context.l10n.sosSent,
           subtitle: _error ??
               (_smsConfigured
-                  ? 'Your family and emergency contacts have been alerted with your location. '
-                      'Tap I\'m safe when you are.'
-                  : 'Your family has been alerted with your location. '
-                      'Tap I\'m safe when you are.'),
+                  ? context.l10n.sosActiveWithContacts
+                  : context.l10n.sosActive),
           actionLabel: 'I\'m safe',
           onAction: _imSafe,
           secondaryLabel: 'Done',
@@ -502,8 +497,8 @@ class _SosScreenState extends State<SosScreen> {
           color: AppColors.statusGreen,
           title: context.l10n.youAreSafe,
           subtitle: _smsConfigured
-              ? 'Your family and emergency contacts were told you\'re safe.'
-              : 'Your family was told you\'re safe.',
+              ? context.l10n.safeToldWithContacts
+              : context.l10n.safeToldFamily,
           actionLabel: 'Done',
           onAction: () => Navigator.of(context).pop(),
         );
@@ -538,19 +533,16 @@ class _IntroCard extends StatelessWidget {
         const SizedBox(height: 12),
         Text(
           smsConfigured
-              ? 'The red button sends a real alert to your family and any '
-                  'emergency contacts, with your location.'
-              : 'The red button sends a real alert to your family, with your location.',
+              ? context.l10n.sosHowRedWithContacts
+              : context.l10n.sosHowRed,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, color: muted),
         ),
         const SizedBox(height: 10),
         Text(
           smsConfigured
-              ? 'Practice runs the countdown only — nobody is notified. '
-                  'The shield on the map is where you add emergency contacts, '
-                  'not I\'m safe.'
-              : 'Practice runs the countdown only — nobody is notified.',
+              ? context.l10n.practiceHowWithContacts
+              : context.l10n.practiceHow,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, color: muted),
         ),
@@ -619,8 +611,8 @@ class _SosButton extends StatelessWidget {
         Semantics(
           button: true,
           label: holding
-              ? 'SOS armed. Release to start the countdown.'
-              : 'SOS. Tap to send a real alert. Press and hold to arm discreetly.',
+              ? context.l10n.sosArmedSemantics
+              : context.l10n.sosButtonSemantics,
           child: GestureDetector(
             key: const ValueKey<String>('sos-send-button'),
             behavior: HitTestBehavior.opaque,
@@ -667,8 +659,8 @@ class _SosButton extends StatelessWidget {
         const SizedBox(height: 24),
         Text(
           holding
-              ? 'Keep holding… release to start the countdown'
-              : 'Tap to send · press and hold to arm discreetly',
+              ? context.l10n.sosHoldHint
+              : context.l10n.sosTapHint,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14,

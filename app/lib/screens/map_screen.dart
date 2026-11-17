@@ -215,7 +215,7 @@ class _MapScreenState extends State<MapScreen>
 
   String _friendlyError(Object e) {
     if (e is ApiException) return e.message;
-    return 'Could not load your family. Check your connection and try again.';
+    return context.l10n.loadFamilyConnectionFailed;
   }
 
   /// Detects whether location sharing is off (e.g. the user skipped it during
@@ -253,10 +253,8 @@ class _MapScreenState extends State<MapScreen>
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text(context.l10n.backgroundUpdatesTitle),
-        content: const Text(
-          'To keep your location fresh when OpenFamily is closed, Android '
-          'may need OpenFamily exempted from battery optimization. Otherwise '
-          'the system can pause background location to save battery.',
+        content: Text(
+          context.l10n.batteryOptimizationBody,
         ),
         actions: <Widget>[
           TextButton(
@@ -884,7 +882,7 @@ class _LayerToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: isSatellite ? 'Switch to standard map' : 'Switch to satellite',
+      message: isSatellite ? context.l10n.switchToStandardMap : context.l10n.switchToSatellite,
       child: Material(
         color: BrandTheme.of(context).sheet,
         shape: const CircleBorder(),
@@ -1023,8 +1021,7 @@ class _LocationOffBanner extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                'Location sharing is off, so your family can\'t see where you '
-                'are.',
+                context.l10n.locationSharingOffBanner,
                 style: TextStyle(
                   fontSize: 13,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,

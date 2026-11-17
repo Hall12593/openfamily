@@ -67,15 +67,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final String next = _newPasswordController.text;
     final String confirm = _confirmPasswordController.text;
     if (current.isEmpty || next.isEmpty || confirm.isEmpty) {
-      setState(() => _passwordError = 'Fill in all password fields.');
+      setState(() => _passwordError = context.l10n.fillAllPasswordFields);
       return;
     }
     if (next.length < 8) {
-      setState(() => _passwordError = 'New password must be at least 8 characters.');
+      setState(() => _passwordError = context.l10n.passwordMin8);
       return;
     }
     if (next != confirm) {
-      setState(() => _passwordError = 'New passwords do not match.');
+      setState(() => _passwordError = context.l10n.passwordsDoNotMatch);
       return;
     }
     setState(() {
@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (!mounted) return;
       setState(() {
         _passwordSaving = false;
-        _passwordError = 'Could not change password. Try again.';
+        _passwordError = context.l10n.changePasswordFailed;
       });
     }
   }
@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // unavailable. Keep identity details on screen and offer retry.
           avatarError = error.message;
         } catch (_) {
-          avatarError = 'Couldn\'t load your profile photo. Please try again.';
+          avatarError = context.l10n.loadPhotoFailed;
         }
       }
 
@@ -182,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (!mounted || generation != _profileLoadGeneration) return;
       setState(() {
         _loading = false;
-        _error = 'Couldn\'t load your profile. Please try again.';
+        _error = context.l10n.loadProfileFailed;
       });
     }
   }
@@ -192,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final String name = _nameController.text.trim();
     if (name.isEmpty) {
-      setState(() => _nameError = 'Name is required.');
+      setState(() => _nameError = context.l10n.nameRequired);
       return;
     }
 
@@ -233,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _nameDirty = false;
         _nameSaving = false;
       });
-      _showSnackBar('Profile updated.');
+      _showSnackBar(context.l10n.profileUpdated);
     } on SessionExpiredException {
       // ApiClient has already started the root redirect to login.
       return;
@@ -247,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (!mounted) return;
       setState(() {
         _nameSaving = false;
-        _nameError = 'Couldn\'t update your profile. Please try again.';
+        _nameError = context.l10n.updateProfileFailed;
       });
     }
   }
@@ -274,7 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final int length = await image.length();
       if (!mounted) return;
       if (length <= 0 || length > ApiClient.maxProfileAvatarBytes) {
-        _setAvatarError('Profile photos must be 5 MB or smaller.');
+        _setAvatarError(context.l10n.photoTooLarge);
         return;
       }
 
@@ -283,11 +283,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       final String? contentType = _avatarContentType(bytes);
       if (contentType == null) {
-        _setAvatarError('Choose a JPEG or PNG image.');
+        _setAvatarError(context.l10n.photoWrongType);
         return;
       }
       if (bytes.isEmpty || bytes.length > ApiClient.maxProfileAvatarBytes) {
-        _setAvatarError('Profile photos must be 5 MB or smaller.');
+        _setAvatarError(context.l10n.photoTooLarge);
         return;
       }
 
@@ -315,7 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           avatarUpdatedAt: DateTime.now().toUtc(),
         );
       });
-      _showSnackBar('Profile photo updated.');
+      _showSnackBar(context.l10n.photoUpdated);
     } on SessionExpiredException {
       // ApiClient has already started the root redirect to login.
       return;
@@ -331,7 +331,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         _pendingAvatarBytes = null;
         _avatarSaving = false;
-        _avatarError = 'Couldn\'t update your profile photo. Please try again.';
+        _avatarError = context.l10n.updatePhotoFailed;
       });
     }
   }
@@ -381,7 +381,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           clearAvatarUpdatedAt: true,
         );
       });
-      _showSnackBar('Profile photo removed.');
+      _showSnackBar(context.l10n.photoRemoved);
     } on SessionExpiredException {
       // ApiClient has already started the root redirect to login.
       return;
@@ -395,7 +395,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (!mounted) return;
       setState(() {
         _avatarSaving = false;
-        _avatarError = 'Couldn\'t remove your profile photo. Please try again.';
+        _avatarError = context.l10n.removePhotoFailed;
       });
     }
   }
@@ -533,7 +533,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 : _chooseAndUploadAvatar,
                             icon: const Icon(Icons.photo_library_outlined),
                             label: Text(
-                              !profile.hasAvatar ? 'Add photo' : 'Change photo',
+                              !profile.hasAvatar ? context.l10n.addPhoto : context.l10n.changePhoto,
                             ),
                           ),
                           if (profile.hasAvatar)
@@ -622,10 +622,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      const Text(
-                        'Your photo is stored privately on your OpenFamily server '
-                        'and shared only with authenticated family members and '
-                        'platform administrators.',
+                      Text(
+                        context.l10n.photoPrivacyBody,
                         style: TextStyle(
                           color: AppColors.textMuted,
                           height: 1.35,
@@ -792,7 +790,7 @@ class _ProfileLoadError extends StatelessWidget {
             const Icon(Icons.error_outline, color: AppColors.sosRed, size: 36),
             const SizedBox(height: 12),
             Text(
-              message ?? 'Couldn\'t load your profile. Please try again.',
+              message ?? context.l10n.loadProfileFailed,
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppColors.sosRed),
             ),

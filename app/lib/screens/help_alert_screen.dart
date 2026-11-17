@@ -68,7 +68,7 @@ class _HelpAlertScreenState extends State<HelpAlertScreen> {
       if (!mounted) return;
       setState(() {
         _sending = false;
-        _error = 'Couldn\'t send help alert. Please try again.';
+        _error = context.l10n.helpAlertFailed;
       });
     }
   }
@@ -97,10 +97,8 @@ class _HelpAlertScreenState extends State<HelpAlertScreen> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Send a non-emergency help alert with your location. Your family '
-          'members get a notification and can see where you are. Emergency '
-          'contacts are not texted.',
+        Text(
+          context.l10n.helpAlertExplainer,
           style: TextStyle(fontSize: 14, color: AppColors.textMuted),
         ),
         const SizedBox(height: 8),

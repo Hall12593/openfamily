@@ -38,7 +38,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
     final position = await LocationService.currentPosition();
     if (!mounted) return;
     if (position == null) {
-      setState(() => _locationLabel = 'Last reported location will be used.');
+      setState(() => _locationLabel = context.l10n.lastReportedLocationUsed);
       return;
     }
     setState(() {
@@ -81,7 +81,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
       if (!mounted) return;
       setState(() {
         _sending = false;
-        _error = 'Couldn\'t check in. Please try again.';
+        _error = context.l10n.checkInFailed;
       });
     }
   }

@@ -65,7 +65,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
     } catch (e) {
       if (!mounted) return;
       setState(() => _error = _errorMessage(e,
-          fallback: 'Couldn\'t load emergency contacts. Please try again.'));
+          fallback: context.l10n.loadContactsFailed));
     }
   }
 
@@ -98,7 +98,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            _errorMessage(e, fallback: 'Couldn\'t open your contacts.'),
+            _errorMessage(e, fallback: context.l10n.openContactsFailed),
           ),
         ),
       );
@@ -174,7 +174,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
           content: Text(
             _errorMessage(
               e,
-              fallback: 'Couldn\'t save that contact. Please try again.',
+              fallback: context.l10n.saveContactFailed,
             ),
           ),
         ),
@@ -226,7 +226,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
           content: Text(
             _errorMessage(
               e,
-              fallback: 'Couldn\'t remove that contact. Please try again.',
+              fallback: context.l10n.removeContactFailed,
             ),
           ),
         ),
@@ -244,12 +244,11 @@ class _SafetyScreenState extends State<SafetyScreen> {
 
   Widget _buildBody() {
     if (!_smsConfigured) {
-      return const Center(
+      return Center(
         child: Padding(
           padding: EdgeInsets.all(24),
           child: Text(
-            'Emergency contacts get SOS by text message. This server '
-            'has not set up SMS yet, so those contacts would not be notified.',
+            context.l10n.smsNotConfigured,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 15, color: AppColors.textMuted),
           ),
@@ -279,11 +278,10 @@ class _SafetyScreenState extends State<SafetyScreen> {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: 8),
       children: [
-        const Padding(
+        Padding(
           padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
           child: Text(
-            'Emergency contacts receive your SOS alerts with your location. '
-            'They do not need the app or to be in your family.',
+            context.l10n.emergencyContactsExplainer,
             style: TextStyle(fontSize: 13, color: AppColors.textMuted),
           ),
         ),
@@ -411,7 +409,7 @@ class _ManualContactDialogState extends State<_ManualContactDialog> {
     final String name = _name.text.trim();
     final String phone = _phone.text.trim();
     setState(() {
-      _nameError = name.isEmpty ? 'Enter a name' : null;
+      _nameError = name.isEmpty ? context.l10n.enterAName : null;
       _phoneError = EmergencyContact.looksLikePhone(phone)
           ? null
           : 'Enter a valid phone number';

@@ -52,7 +52,7 @@ class _CreateCircleScreenState extends State<CreateCircleScreen> {
       if (!mounted) return;
       setState(() {
         _submitting = false;
-        _error = 'Could not create the family. Please try again.';
+        _error = context.l10n.createFamilyFailed;
       });
       return;
     }
@@ -91,10 +91,8 @@ class _CreateCircleScreenState extends State<CreateCircleScreen> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Optional — this is the group your family will see on the map, '
-                'e.g. "Family" or "The Smiths". Leave it blank and we\'ll call '
-                'it "My Family".',
+              Text(
+                context.l10n.createFamilyHint,
                 style: TextStyle(fontSize: 14, color: AppColors.textMuted),
               ),
               const SizedBox(height: 20),

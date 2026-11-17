@@ -74,7 +74,7 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
       setState(() {
         _error = e is ApiException
             ? e.message
-            : 'Couldn\'t load history. Please try again.';
+            : context.l10n.loadHistoryFailed;
         _loading = false;
       });
     }

@@ -63,7 +63,7 @@ class MemberTile extends StatelessWidget {
                       Expanded(
                         child: Text(
                           member.position == null
-                              ? 'No location yet'
+                              ? context.l10n.addressNoLocation
                               : member.address,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
