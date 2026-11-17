@@ -50,6 +50,27 @@ type Notification struct {
 
 	// UnifiedPushEndpoint is the ntfy/UnifiedPush endpoint (Android only).
 	UnifiedPushEndpoint string
+
+	// DeviceID is the destination device. When that device has an open
+	// WebSocket (GET /ws/device) the message goes through it; otherwise the
+	// push token or endpoint above is used.
+	DeviceID string
+
+	// Ephemeral messages (such as a location request that expires in 30
+	// seconds) are never stored for later delivery.
+	Ephemeral bool
+}
+
+// HasPushTarget reports whether the notification carries a usable APNs token
+// or UnifiedPush endpoint for its platform.
+func (n Notification) HasPushTarget() bool {
+	switch n.Platform {
+	case "ios":
+		return n.PushToken != ""
+	case "android":
+		return n.UnifiedPushEndpoint != ""
+	}
+	return false
 }
 
 // Dispatcher delivers push notifications. It is an interface so tests can
