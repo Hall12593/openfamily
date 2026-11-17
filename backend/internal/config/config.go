@@ -163,6 +163,10 @@ type Config struct {
 	// status; empty means "not configured".
 	SiteAddress string
 
+	// TomTomAPIKey enables the optional live-traffic map layer. Empty (the
+	// default) turns the feature off entirely.
+	TomTomAPIKey string
+
 	// DefaultLanguage is the initial server-wide language ("en", "es", or
 	// empty to follow each device). An admin setting saved in the database
 	// overrides it.
@@ -193,6 +197,7 @@ func Load() Config {
 		InsecureHTTP:          getenvBool("INSECURE_HTTP", false),
 		VerbosePush:           getenvBool("VERBOSE_PUSH", false),
 		NtfyBaseURL:           strings.TrimRight(getenv("NTFY_BASE_URL", ""), "/"),
+		TomTomAPIKey:          strings.TrimSpace(getenv("TOMTOM_API_KEY", "")),
 		DefaultLanguage:       strings.ToLower(strings.TrimSpace(getenv("DEFAULT_LANGUAGE", ""))),
 		TileURL:               getenv("TILE_URL", DefaultTileURL),
 		SatelliteTileURL:      getenv("SATELLITE_TILE_URL", DefaultSatelliteTileURL),
