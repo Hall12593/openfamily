@@ -29,6 +29,7 @@ import {
   Marker,
   Popup,
   TileLayer,
+  useMap,
   useMapEvents,
 } from "react-leaflet";
 import "./map.css";
@@ -53,6 +54,7 @@ import {
 } from "./status";
 import type { Group, LatLng, Member, Place, RawMember, StreamFrame } from "./types";
 import { placeBubbleIcon } from "./placeBubble";
+import { TrafficTileLayer } from "./trafficLayer";
 
 /** Default OSM tile URL — privacy-first, matching the app. Swap for a self-hosted server. */
 export const DEFAULT_TILE_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -241,6 +243,44 @@ export function MapView(props: MapViewProps): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   // Bumped to re-run the fetch effect in place (Retry) without a page reload.
   const [reloadKey, setReloadKey] = useState(0);
+
+  // Optional live-traffic overlay: offered only when the server has a provider
+  // key configured (GET /config -> traffic_enabled).
+  const [trafficAvailable, setTrafficAvailable] = useState(false);
+  const [trafficOn, setTrafficOn] = useState<boolean>(() => {
+    try {
+      return window.localStorage.getItem("wb-traffic") === "1";
+    } catch {
+      return false;
+    }
+  });
+  const sameOriginApi = isSameOriginApi(apiBase);
+  useEffect(() => {
+    if (!sameOriginApi) return;
+    let cancelled = false;
+    fetch(`${resolveBase(apiBase)}/config`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((cfg: { traffic_enabled?: boolean } | null) => {
+        if (!cancelled) setTrafficAvailable(cfg?.traffic_enabled === true);
+      })
+      .catch(() => {
+        // An older or unreachable server simply has no traffic option.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [apiBase, sameOriginApi]);
+  const toggleTraffic = useCallback(() => {
+    setTrafficOn((on) => {
+      const next = !on;
+      try {
+        window.localStorage.setItem("wb-traffic", next ? "1" : "0");
+      } catch {
+        // Blocked storage: the choice lasts for this page only.
+      }
+      return next;
+    });
+  }, []);
 
   const groups = groupsProp ?? fetchedGroups;
   const avatarSources = useMemo(
@@ -712,6 +752,7 @@ export function MapView(props: MapViewProps): JSX.Element {
       >
         <TileLayer url={tileUrl} attribution='&copy; OpenStreetMap contributors' />
         <ZoomWatcher onZoom={() => setViewTick((t) => t + 1)} />
+        {trafficAvailable && trafficOn ? <TrafficOverlay /> : null}
 
         {/* GPS-issue approximate zones */}
         {gpsIssueMembers.map((m) => (
@@ -769,6 +810,17 @@ export function MapView(props: MapViewProps): JSX.Element {
           ),
         )}
       </MapContainer>
+      {trafficAvailable ? (
+        <button
+          type="button"
+          className={`wb-map-traffic${trafficOn ? " is-on" : ""}`}
+          aria-pressed={trafficOn}
+          title={trafficOn ? t("Hide traffic") : t("Show traffic")}
+          onClick={toggleTraffic}
+        >
+          {t("Traffic")}
+        </button>
+      ) : null}
 
       <GroupSwitcher
         groups={groups}
@@ -870,6 +922,19 @@ export function MapView(props: MapViewProps): JSX.Element {
 export default MapView;
 
 /* --------------------------------- helpers --------------------------------- */
+
+/** Adds the live-traffic tile layer to the surrounding map while mounted. */
+function TrafficOverlay(): null {
+  const map = useMap();
+  useEffect(() => {
+    const layer = new TrafficTileLayer({ attribution: "© TomTom", maxNativeZoom: 18, opacity: 0.85, zIndex: 5 });
+    layer.addTo(map);
+    return () => {
+      layer.remove();
+    };
+  }, [map]);
+  return null;
+}
 
 /** A tiny child that bumps `viewTick` on zoom changes so clustering re-runs. */
 function ZoomWatcher({ onZoom }: { onZoom: () => void }): JSX.Element | null {

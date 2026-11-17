@@ -76,6 +76,7 @@ function isRootApiPath(path: string): boolean {
     path.startsWith('/devices') ||
     path.startsWith('/locations') ||
     path.startsWith('/alerts') ||
+    path.startsWith('/traffic') ||
     path.startsWith('/config') ||
     path.startsWith('/healthz')
   )
@@ -274,6 +275,11 @@ export function getFamilyMemberHistory(
   return request<MemberHistory>(
     `/family/members/${encodeURIComponent(memberId)}/history?${q.toString()}`,
   )
+}
+
+/** One live-traffic tile (PNG) from the server's traffic proxy. */
+export function getTrafficTile(z: number, x: number, y: number): Promise<Blob> {
+  return request<Blob>(`/traffic/tiles/${z}/${x}/${y}`, { binary: true, accept: 'image/png,*/*;q=0.5' })
 }
 
 export interface LanguageSettings {

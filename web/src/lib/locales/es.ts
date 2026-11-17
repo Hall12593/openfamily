@@ -352,4 +352,7 @@ export const es: Record<string, string> = {
   "{name}'s profile picture": "Foto de perfil de {name}",
   "No profile picture for {name}": "Sin foto de perfil para {name}",
   "New password for {email} (minimum 8 characters)": "Contraseña nueva para {email} (mínimo 8 caracteres)",
+  "Traffic": "Tráfico",
+  "Show traffic": "Mostrar tráfico",
+  "Hide traffic": "Ocultar tráfico",
 }
