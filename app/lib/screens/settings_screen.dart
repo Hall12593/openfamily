@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart' show BiometricType;
 
+import '../l10n/l10n.dart';
+import '../services/locale_preference.dart';
 import '../services/unit_preference.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
@@ -434,6 +436,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const _SectionHeader('Appearance'),
             const _AppearanceTile(),
             const _UnitsTile(),
+            const _LanguageTile(),
             const Divider(height: 1),
             const _SectionHeader('Privacy & Security'),
           SwitchListTile(
@@ -705,6 +708,61 @@ class _UnitsTile extends StatelessWidget {
                 onSelectionChanged: (Set<UnitPreference> next) {
                   if (next.isEmpty) return;
                   UnitPreferenceService.setPreference(next.first);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LanguageTile extends StatelessWidget {
+  const _LanguageTile();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<LanguagePreference>(
+      valueListenable: LocalePreferenceService.preference,
+      builder: (context, preference, _) {
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.l10n.languageSetting,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                context.l10n.languageSettingHelp,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+              ),
+              const SizedBox(height: 12),
+              SegmentedButton<LanguagePreference>(
+                showSelectedIcon: false,
+                segments: [
+                  ButtonSegment<LanguagePreference>(
+                    value: LanguagePreference.system,
+                    label: Text(context.l10n.languageAuto),
+                  ),
+                  ButtonSegment<LanguagePreference>(
+                    value: LanguagePreference.english,
+                    label: Text(context.l10n.languageEnglish),
+                  ),
+                  ButtonSegment<LanguagePreference>(
+                    value: LanguagePreference.spanish,
+                    label: Text(context.l10n.languageSpanish),
+                  ),
+                ],
+                selected: <LanguagePreference>{preference},
+                onSelectionChanged: (Set<LanguagePreference> next) {
+                  if (next.isEmpty) return;
+                  LocalePreferenceService.setPreference(next.first);
                 },
               ),
             ],

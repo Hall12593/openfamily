@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'l10n/app_localizations.dart';
 
 import 'screens/login_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/server_config_screen.dart';
 import 'screens/welcome_screen.dart';
-import 'services/unit_preference.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
 import 'services/background_location_service.dart';
 import 'services/push_service.dart';
 import 'services/server_config.dart';
 import 'services/session_gate.dart';
+import 'services/locale_preference.dart';
 import 'services/theme_preference.dart';
 import 'services/tile_config.dart';
 import 'services/token_storage.dart';
+import 'services/unit_preference.dart';
 import 'theme/app_theme.dart';
 import 'widgets/biometric_app_lock.dart';
 import 'widgets/dot_grid.dart';
@@ -30,6 +34,7 @@ Future<void> main() async {
   PushService.initialize();
   await ThemePreferenceService.load();
   await UnitPreferenceService.load();
+  await LocalePreferenceService.load();
   runApp(const OpenFamilyApp());
 }
 
@@ -77,21 +82,34 @@ class _OpenFamilyAppState extends State<OpenFamilyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<ThemePreference>(
-      valueListenable: ThemePreferenceService.preference,
-      builder: (context, preference, _) {
-        return MaterialApp(
-          title: 'OpenFamily',
-          debugShowCheckedModeBanner: false,
-          navigatorKey: navigatorKey,
-          theme: buildLightTheme(),
-          darkTheme: buildDarkTheme(),
-          themeMode: preference.themeMode,
-          builder: (context, child) => BiometricAppLock(
-            onLogout: _handleBiometricLogout,
-            child: child ?? const SizedBox.shrink(),
-          ),
-          home: const _SessionGate(),
+    return ValueListenableBuilder<LanguagePreference>(
+      valueListenable: LocalePreferenceService.preference,
+      builder: (context, language, _) {
+        return ValueListenableBuilder<ThemePreference>(
+          valueListenable: ThemePreferenceService.preference,
+          builder: (context, preference, _) {
+            return MaterialApp(
+              title: 'OpenFamily',
+              debugShowCheckedModeBanner: false,
+              navigatorKey: navigatorKey,
+              theme: buildLightTheme(),
+              darkTheme: buildDarkTheme(),
+              themeMode: preference.themeMode,
+              locale: language.locale,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: AppLocalizations.supportedLocales,
+              builder: (context, child) => BiometricAppLock(
+                onLogout: _handleBiometricLogout,
+                child: child ?? const SizedBox.shrink(),
+              ),
+              home: const _SessionGate(),
+            );
+          },
         );
       },
     );
