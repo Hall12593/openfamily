@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' hide Circle;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../l10n/l10n.dart';
 import '../models/member.dart';
@@ -24,6 +25,7 @@ import '../services/push_service.dart';
 import '../services/server_features.dart';
 import '../services/tile_config.dart';
 import '../services/token_storage.dart';
+import '../services/traffic_tiles.dart';
 import '../theme/app_theme.dart';
 import '../utils/member_clustering.dart';
 import '../widgets/circle_switcher.dart';
@@ -73,6 +75,10 @@ class _MapScreenState extends State<MapScreen>
   final MapController _mapController = MapController();
 
   bool _satellite = false;
+
+  /// Whether the live-traffic overlay is shown (only offered when the server
+  /// has a traffic provider configured).
+  bool _traffic = false;
 
   /// Whether location sharing is off (the user skipped it during onboarding).
   /// When true we show a gentle re-prompt banner so they can enable it.
@@ -135,6 +141,7 @@ class _MapScreenState extends State<MapScreen>
     PushService.sync();
     DeviceChannelHost.ensureRunning();
     unawaited(_refreshServerFeatures());
+    unawaited(_loadTrafficPreference());
     // One-time Android battery-optimization guidance (keeps background
     // updates alive when the app is closed). No-op elsewhere. Runs after the
     // first frame so the activity is visible.
@@ -731,6 +738,29 @@ class _MapScreenState extends State<MapScreen>
     setState(() => _satellite = !_satellite);
   }
 
+  static const String _trafficPrefKey = 'map_traffic_enabled';
+
+  Future<void> _loadTrafficPreference() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (!mounted) return;
+      setState(() => _traffic = prefs.getBool(_trafficPrefKey) ?? false);
+    } catch (_) {
+      // Keep the default (off).
+    }
+  }
+
+  Future<void> _toggleTraffic() async {
+    final bool next = !_traffic;
+    setState(() => _traffic = next);
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_trafficPrefKey, next);
+    } catch (_) {
+      // The choice still applies for this session.
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Member> members = _liveMembers();
@@ -769,6 +799,15 @@ class _MapScreenState extends State<MapScreen>
                 urlTemplate: _satellite ? kSatelliteTileUrl : kTileUrl,
                 userAgentPackageName: 'app.openfamily',
               ),
+              // Live traffic, streamed through the server (optional).
+              if (_traffic && ServerFeatures.instance.trafficEnabled)
+                TileLayer(
+                  urlTemplate: kTrafficTileTemplate,
+                  tileProvider: ApiTileProvider(),
+                  userAgentPackageName: 'app.openfamily',
+                  maxNativeZoom: 18,
+                  evictErrorTileStrategy: EvictErrorTileStrategy.dispose,
+                ),
               // Saved places: the arrive/leave radius and an icon with the name.
               CircleLayer(
                 circles: [
@@ -895,12 +934,42 @@ class _MapScreenState extends State<MapScreen>
                       onToggle: _toggleSatellite,
                     ),
                   ),
+                  if (ServerFeatures.instance.trafficEnabled) ...[
+                    const SizedBox(height: 8),
+                    _TrafficToggle(
+                      showing: _traffic,
+                      onToggle: _toggleTraffic,
+                    ),
+                  ],
                   const SizedBox(height: 8),
                   _LocateButton(onTap: _centerOnUser),
                 ],
               ),
             ),
           ),
+
+          // Traffic data attribution, shown while the overlay is on.
+          if (_traffic && ServerFeatures.instance.trafficEnabled)
+            Positioned(
+              right: 8,
+              bottom: controlBarReserved + 2,
+              child: IgnorePointer(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: BrandTheme.of(context).sheet.withValues(alpha: 0.85),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    context.l10n.trafficAttribution,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+            ),
 
           // Bottom-center `+` FAB for the Check In / Help Alert / Invite quick
           // actions, docked just above the fixed control bar.
@@ -1036,6 +1105,39 @@ class _LayerToggle extends StatelessWidget {
               isSatellite ? Icons.map : Icons.satellite_alt,
               size: 22,
               color: BrandTheme.of(context).accentInk,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A small floating button that shows or hides the live-traffic overlay.
+class _TrafficToggle extends StatelessWidget {
+  const _TrafficToggle({required this.showing, required this.onToggle});
+
+  final bool showing;
+  final VoidCallback onToggle;
+
+  @override
+  Widget build(BuildContext context) {
+    final BrandTheme brand = BrandTheme.of(context);
+    return Tooltip(
+      message: showing ? context.l10n.hideTraffic : context.l10n.showTraffic,
+      child: Material(
+        color: showing ? AppColors.accent : brand.sheet,
+        shape: const CircleBorder(),
+        elevation: 3,
+        child: InkWell(
+          customBorder: const CircleBorder(),
+          onTap: onToggle,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Icon(
+              Icons.traffic,
+              size: 22,
+              color: showing ? AppColors.onAccent : brand.accentInk,
             ),
           ),
         ),
