@@ -440,5 +440,11 @@
   "enterValidPhone": "Ingresa un número de teléfono válido",
   "justNow": "justo ahora",
   "dontHaveAccount": "¿No tienes una cuenta?",
-  "nooneInFamilyYet": "Aún no hay nadie en {name}"
+  "nooneInFamilyYet": "Aún no hay nadie en {name}",
+  "exportTrack": "Exportar recorrido",
+  "exportDayGpx": "Este día en GPX",
+  "exportDayGeoJson": "Este día en GeoJSON",
+  "exportWeekGpx": "Últimos 7 días en GPX",
+  "exportWeekGeoJson": "Últimos 7 días en GeoJSON",
+  "exportTrackFailed": "No se pudo exportar el recorrido. Inténtalo de nuevo."
 }

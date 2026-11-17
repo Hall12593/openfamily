@@ -627,5 +627,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "exportTrack": "Export track",
+  "exportDayGpx": "This day as GPX",
+  "exportDayGeoJson": "This day as GeoJSON",
+  "exportWeekGpx": "Last 7 days as GPX",
+  "exportWeekGeoJson": "Last 7 days as GeoJSON",
+  "exportTrackFailed": "Couldn't export the track. Please try again."
 }
