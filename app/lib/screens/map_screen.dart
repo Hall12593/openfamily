@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart' hide Circle;
 
 import '../l10n/l10n.dart';
 import '../models/member.dart';
+import '../models/place.dart';
 import '../services/api_client.dart';
 import '../services/app_config.dart';
 import '../services/background_location_service.dart';
@@ -27,6 +28,7 @@ import '../utils/member_clustering.dart';
 import '../widgets/circle_switcher.dart';
 import '../widgets/map_bottom_bar.dart';
 import '../widgets/member_avatar_bubble.dart';
+import '../widgets/place_marker.dart';
 import 'check_in_screen.dart';
 import 'help_alert_screen.dart';
 import 'invite_screen.dart';
@@ -78,6 +80,9 @@ class _MapScreenState extends State<MapScreen>
   // Live family data from the backend.
   final FamilyService _familyService = FamilyService();
   List<Member> _members = <Member>[];
+
+  /// Saved places drawn on the map (icon, name and arrive/leave radius).
+  List<Place> _places = <Place>[];
 
   /// Live roster exposed to the pushed People screen so its status chips stay
   /// live off the map's single WebSocket subscription (no second connection).
@@ -181,6 +186,7 @@ class _MapScreenState extends State<MapScreen>
       setState(() {
         _familyName = name;
         _members = members;
+        _places = _familyService.places;
         _membersListenable.value = members;
         _hasFamily = true;
         _loading = false;
@@ -520,9 +526,17 @@ class _MapScreenState extends State<MapScreen>
         .push(MaterialPageRoute<void>(builder: (_) => const SosScreen()));
   }
 
-  void _openPlaces() {
-    Navigator.of(context)
+  Future<void> _openPlaces() async {
+    await Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (_) => const PlacesScreen()));
+    // Places may have been added, edited or removed while the screen was open.
+    final List<Member> members = await _familyService.refreshPlaces();
+    if (!mounted) return;
+    setState(() {
+      _places = _familyService.places;
+      _members = members;
+      _membersListenable.value = members;
+    });
   }
 
   Future<void> _refreshServerFeatures() async {
@@ -656,6 +670,31 @@ class _MapScreenState extends State<MapScreen>
               TileLayer(
                 urlTemplate: _satellite ? kSatelliteTileUrl : kTileUrl,
                 userAgentPackageName: 'app.openfamily',
+              ),
+              // Saved places: the arrive/leave radius and an icon with the name.
+              CircleLayer(
+                circles: [
+                  for (final Place p in _places)
+                    CircleMarker(
+                      point: p.position,
+                      radius: p.radiusMeters,
+                      useRadiusInMeter: true,
+                      color: AppColors.purple.withValues(alpha: 0.08),
+                      borderColor: AppColors.purple.withValues(alpha: 0.45),
+                      borderStrokeWidth: 1.5,
+                    ),
+                ],
+              ),
+              MarkerLayer(
+                markers: [
+                  for (final Place p in _places)
+                    Marker(
+                      point: p.position,
+                      width: PlaceMarker.width,
+                      height: PlaceMarker.height,
+                      child: PlaceMarker(place: p),
+                    ),
+                ],
               ),
               // Blue "range" circle for members whose location accuracy is
               // known (or who are in the approximate GPS-accuracy state).
