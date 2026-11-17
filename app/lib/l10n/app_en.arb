@@ -662,5 +662,8 @@
   "helpPresetRide": "I need a ride",
   "helpPresetUnwell": "I don't feel well",
   "helpMessageLabel": "Message (optional)",
-  "helpMessageHint": "Add details for your family"
+  "helpMessageHint": "Add details for your family",
+  "showTraffic": "Show traffic",
+  "hideTraffic": "Hide traffic",
+  "trafficAttribution": "© TomTom"
 }

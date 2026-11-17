@@ -468,5 +468,8 @@
   "helpPresetRide": "Necesito que me recojan",
   "helpPresetUnwell": "Me siento mal",
   "helpMessageLabel": "Mensaje (opcional)",
-  "helpMessageHint": "Agrega detalles para tu familia"
+  "helpMessageHint": "Agrega detalles para tu familia",
+  "showTraffic": "Mostrar tráfico",
+  "hideTraffic": "Ocultar tráfico",
+  "trafficAttribution": "© TomTom"
 }
