@@ -48,6 +48,8 @@ services:
       # Read-only passthrough so the admin panel can show domain status.
       SITE_ADDRESS: ${SITE_ADDRESS:-}
       APP_ENV: ${APP_ENV:-development}
+      # Optional live-traffic map layer (TomTom). Leave empty to disable.
+      TOMTOM_API_KEY: ${TOMTOM_API_KEY:-}
       # Initial server-wide language ("en", "es"); a platform admin can change
       # it from the admin panel Settings page.
       DEFAULT_LANGUAGE: ${DEFAULT_LANGUAGE:-}

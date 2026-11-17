@@ -29,6 +29,13 @@ type Server struct {
 	// NtfyBaseURL is the public ntfy origin advertised by GET /config.
 	NtfyBaseURL string
 
+	// TomTomAPIKey enables the optional live-traffic layer (TOMTOM_API_KEY).
+	// It is only ever used server-side; clients fetch tiles through
+	// GET /traffic/tiles/{z}/{x}/{y}.
+	TomTomAPIKey string
+	// trafficBase overrides the upstream tile URL in tests.
+	trafficBase string
+
 	// DefaultLanguageEnv is the DEFAULT_LANGUAGE fallback used when no admin
 	// setting is saved. The effective value is DefaultLanguage().
 	DefaultLanguageEnv string

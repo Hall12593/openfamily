@@ -25,5 +25,6 @@ func (s *Server) GetConfig(w http.ResponseWriter, r *http.Request) {
 		"tile_url":           tileURL,
 		"satellite_tile_url": satelliteURL,
 		"default_language":   s.DefaultLanguage(),
+		"traffic_enabled":    s.TrafficEnabled(),
 	})
 }

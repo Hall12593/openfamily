@@ -67,6 +67,7 @@ func main() {
 	srv := handlers.New(pool, tm, dispatcher)
 	srv.VerbosePush = cfg.VerbosePush
 	srv.NtfyBaseURL = cfg.NtfyBaseURL
+	srv.TomTomAPIKey = cfg.TomTomAPIKey
 	if lang, ok := handlers.NormalizeLanguage(cfg.DefaultLanguage); ok {
 		srv.DefaultLanguageEnv = lang
 	} else {
@@ -189,6 +190,7 @@ func main() {
 		r.Patch("/family/geofences/{id}", srv.UpdateGeofence)
 		r.Delete("/family/geofences/{id}", srv.DeleteGeofence)
 
+		r.Get("/traffic/tiles/{z}/{x}/{y}", srv.GetTrafficTile)
 		r.Get("/family/places", srv.ListPlaces)
 		r.Post("/family/places", srv.CreatePlace)
 		r.Patch("/family/places/{id}", srv.UpdatePlace)
