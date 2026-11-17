@@ -48,6 +48,9 @@ services:
       # Read-only passthrough so the admin panel can show domain status.
       SITE_ADDRESS: ${SITE_ADDRESS:-}
       APP_ENV: ${APP_ENV:-development}
+      # Initial server-wide language ("en", "es"); a platform admin can change
+      # it from the admin panel Settings page.
+      DEFAULT_LANGUAGE: ${DEFAULT_LANGUAGE:-}
       # Bootstraps the first platform admin on startup (see .env.example).
       PLATFORM_ADMIN_EMAIL: ${PLATFORM_ADMIN_EMAIL:-}
       PLATFORM_ADMIN_PASSWORD: ${PLATFORM_ADMIN_PASSWORD:-}
