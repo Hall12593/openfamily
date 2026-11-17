@@ -144,7 +144,14 @@ func (s *Server) RequestMemberLocation(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to load member devices")
 		return
 	}
-	if (len(endpoints) == 0 && len(iosTokens) == 0) || s.Push == nil {
+	// A phone holding an open WebSocket is reachable even without any push
+	// endpoint registered.
+	connected, err := s.connectedDeviceIDs(r.Context(), targetID)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to load member devices")
+		return
+	}
+	if len(connected) == 0 && (len(endpoints) == 0 && len(iosTokens) == 0 || s.Push == nil) {
 		writeError(w, http.StatusConflict, "member has no reachable device")
 		return
 	}
@@ -263,11 +270,34 @@ func (s *Server) iosPushTokens(ctx context.Context, userID string) ([]string, er
 }
 
 // dispatchLocationRequest delivers one location-refresh command to a member's
-// devices: Android (UnifiedPush, message body = command JSON, unchanged wire
-// shape) first, then iOS (silent content-available APNs payload that is
+// devices: the open WebSocket first, then Android (UnifiedPush, message body =
+// command JSON, unchanged wire shape), then iOS (silent content-available APNs payload that is
 // executed in the background — never shown as an alert). Returns true when at
 // least one transport accepted the request.
 func (s *Server) dispatchLocationRequest(parent context.Context, body []byte, userID string) bool {
+	// Devices with an open WebSocket receive the command directly.
+	if ids, err := s.connectedDeviceIDs(parent, userID); err != nil {
+		slog.Warn("location request: load connected devices", "err", err)
+	} else {
+		sent := false
+		for _, id := range ids {
+			err := s.deliver(parent, push.Notification{
+				Title:     "OpenFamily location refresh",
+				Body:      string(body),
+				DeviceID:  id,
+				Ephemeral: true,
+			})
+			if err == nil {
+				sent = true
+			}
+		}
+		if sent {
+			return true
+		}
+	}
+	if s.Push == nil {
+		return false
+	}
 	endpoints, err := s.androidPushEndpoints(parent, userID)
 	if err != nil {
 		slog.Warn("location request: load android endpoints", "err", err)

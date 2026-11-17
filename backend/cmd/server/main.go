@@ -133,6 +133,8 @@ func main() {
 		_, _ = w.Write([]byte(`{"status":"ok"}`))
 	})
 	r.Get("/config", srv.GetConfig)
+	// Per-device notification channel; authenticates with the ingest key.
+	r.Get("/ws/device", srv.DeviceStream)
 	r.Get("/alerts/share/{token}", srv.ShareAlert)
 
 	// Auth (unauthenticated).
