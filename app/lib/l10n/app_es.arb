@@ -1,0 +1,8 @@
+{
+  "@@locale": "es",
+  "languageSetting": "Idioma",
+  "languageSettingHelp": "Elige el idioma de la aplicación. Automático sigue el del dispositivo.",
+  "languageAuto": "Automático",
+  "languageEnglish": "English",
+  "languageSpanish": "Español"
+}
