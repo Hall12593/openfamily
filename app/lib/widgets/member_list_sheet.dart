@@ -201,7 +201,7 @@ class _PeopleHeader extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onAddPerson,
-                    tooltip: 'Invite someone to $circleName',
+                    tooltip: context.l10n.inviteSomeoneTo(circleName),
                     icon: const Icon(
                       Icons.person_add_alt_1,
                       color: AppColors.purple,

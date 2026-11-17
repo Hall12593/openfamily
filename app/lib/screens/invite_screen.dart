@@ -104,7 +104,7 @@ class _InviteScreenState extends State<InviteScreen> {
   }
 
   Widget _buildInvite() {
-    final String circle = widget.circleName ?? 'your family';
+    final String circle = widget.circleName ?? context.l10n.yourFamilyFallback;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -118,7 +118,7 @@ class _InviteScreenState extends State<InviteScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Share a code so your family can join $circle and appear on your map.',
+          context.l10n.shareCodeToJoin(circle),
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 15, color: AppColors.textMuted),
         ),

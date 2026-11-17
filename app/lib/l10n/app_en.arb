@@ -253,5 +253,102 @@
         "type": "String"
       }
     }
-  }
+  },
+  "statusLive": "Live",
+  "statusLowBatteryAccuracy": "Low battery / accuracy",
+  "statusGpsIssue": "GPS issue",
+  "statusUpdatesStopped": "Updates stopped",
+  "statusLocationError": "Location error",
+  "statusDescLive": "Live — real-time, accurate location",
+  "statusDescWarning": "Low battery or location-accuracy issue",
+  "statusDescGpsIssue": "GPS accuracy issue — approximate location",
+  "statusDescStopped": "Location updates stopped",
+  "statusDescError": "Location error",
+  "movementDriving": "Driving",
+  "movementBiking": "Biking",
+  "movementBoat": "On a boat",
+  "movementFlying": "Flying",
+  "movementAtHome": "At Home",
+  "movementAtWork": "At Work",
+  "movementAtGym": "At Gym",
+  "movementMostVisited": "Most-visited place",
+  "addressNoLocation": "No location yet",
+  "addressStationary": "Stationary",
+  "speedingLabel": "Speeding",
+  "notMoving": "Not moving",
+  "offlineStatus": "Offline",
+  "defaultMemberName": "Member",
+  "positionFromAgo": "Position from {age} ago",
+  "@positionFromAgo": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "drivingWithSpeed": "Driving · {speed}",
+  "@drivingWithSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "speedingWithSpeed": "Speeding · {speed}",
+  "@speedingWithSpeed": {
+    "placeholders": {
+      "speed": {
+        "type": "String"
+      }
+    }
+  },
+  "etaWithValue": "ETA {eta}",
+  "@etaWithValue": {
+    "placeholders": {
+      "eta": {
+        "type": "String"
+      }
+    }
+  },
+  "currentFamilyLabel": "Current family: {name}",
+  "@currentFamilyLabel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteSomeoneTo": "Invite someone to {name}",
+  "@inviteSomeoneTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "removePlaceBody": "Remove \"{name}\" from your family's places?",
+  "@removePlaceBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "placeSavedForFamily": "{name} saved for the family",
+  "@placeSavedForFamily": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCodeToJoin": "Share a code so your family can join {family} and appear on your map.",
+  "@shareCodeToJoin": {
+    "placeholders": {
+      "family": {
+        "type": "String"
+      }
+    }
+  },
+  "yourFamilyFallback": "your family"
 }

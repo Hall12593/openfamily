@@ -117,7 +117,7 @@ class MemberTile extends StatelessWidget {
         _StatusChip(
           icon: Icons.schedule,
           color: AppColors.purple,
-          label: 'ETA ${member.eta}',
+          label: context.l10n.etaWithValue(member.eta!),
         ),
       );
     }

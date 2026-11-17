@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'l10n/app_localizations.dart';
+import 'l10n/l10n.dart';
 
 import 'screens/login_screen.dart';
 import 'screens/map_screen.dart';
@@ -103,10 +103,14 @@ class _OpenFamilyAppState extends State<OpenFamilyApp> {
                 GlobalCupertinoLocalizations.delegate,
               ],
               supportedLocales: AppLocalizations.supportedLocales,
-              builder: (context, child) => BiometricAppLock(
-                onLogout: _handleBiometricLogout,
-                child: child ?? const SizedBox.shrink(),
-              ),
+              builder: (context, child) {
+                final AppLocalizations? l10n = AppLocalizations.of(context);
+                if (l10n != null) CurrentL10n.update(l10n);
+                return BiometricAppLock(
+                  onLogout: _handleBiometricLogout,
+                  child: child ?? const SizedBox.shrink(),
+                );
+              },
               home: const _SessionGate(),
             );
           },

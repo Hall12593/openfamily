@@ -106,7 +106,7 @@ class _SingleCircleContext extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Semantics(
-                label: 'Current family: $label',
+                label: context.l10n.currentFamilyLabel(label),
                 child: Material(
                   color: BrandTheme.of(context).sheet,
                   borderRadius: BorderRadius.circular(22),
