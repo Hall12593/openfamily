@@ -17,6 +17,15 @@ void main() {
     expect(image.path, '/traffic/tiles/12/2044/1360');
     expect(image, const ApiTileImage(z: 12, x: 2044, y: 1360));
     expect(image == const ApiTileImage(z: 12, x: 2044, y: 1361), isFalse);
+    expect(
+      const ApiTileImage(z: 11, x: 1022, y: 680, size: 512).path,
+      '/traffic/tiles/11/1022/680?size=512',
+    );
+    expect(
+      const ApiTileImage(z: 11, x: 1022, y: 680, size: 512) ==
+          const ApiTileImage(z: 11, x: 1022, y: 680),
+      isFalse,
+    );
   });
 
   testWidgets('a tile is fetched through the injected fetcher and decoded',

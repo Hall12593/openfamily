@@ -44,11 +44,23 @@ func validTileCoords(z, x, y int) bool {
 	return x < limit && y < limit
 }
 
+// parseTileSize accepts the tile edge in pixels a client wants: 256 (default)
+// or 512, which needs a quarter of the requests for the same area.
+func parseTileSize(raw string) (int, bool) {
+	switch raw {
+	case "", "256":
+		return 256, true
+	case "512":
+		return 512, true
+	}
+	return 0, false
+}
+
 // trafficTileRequestURL builds the upstream URL. Only validated integers are
 // interpolated, so a caller cannot steer the request anywhere else.
-func trafficTileRequestURL(base string, z, x, y int, key string) string {
+func trafficTileRequestURL(base string, z, x, y, size int, key string) string {
 	return base + "/" + strconv.Itoa(z) + "/" + strconv.Itoa(x) + "/" + strconv.Itoa(y) +
-		".png?tileSize=256&key=" + key
+		".png?tileSize=" + strconv.Itoa(size) + "&key=" + key
 }
 
 // GetTrafficTile proxies one live-traffic raster tile. Apps and the admin
@@ -72,13 +84,18 @@ func (s *Server) GetTrafficTile(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusBadRequest, "invalid tile")
 		return
 	}
+	size, ok := parseTileSize(r.URL.Query().Get("size"))
+	if !ok {
+		writeError(w, http.StatusBadRequest, "invalid tile size")
+		return
+	}
 	if s.AuthLimit != nil &&
 		!s.AuthLimit.Allow("traffic:"+claims.UserID, trafficTilesPerMinute, time.Minute) {
 		writeError(w, http.StatusTooManyRequests, "too many traffic tile requests")
 		return
 	}
 
-	body, contentType, status := s.fetchTrafficTile(r.Context(), z, x, y)
+	body, contentType, status := s.fetchTrafficTile(r.Context(), z, x, y, size)
 	if status != http.StatusOK {
 		// A provider problem (bad key, quota, outage) is the operator's to fix;
 		// the client just sees a gateway error and shows no traffic.
@@ -94,7 +111,7 @@ func (s *Server) GetTrafficTile(w http.ResponseWriter, r *http.Request) {
 // is the upstream status, or 0 when the request itself failed. The API key is
 // part of the upstream URL, so errors from the HTTP client (which embed the
 // URL) are never logged verbatim.
-func (s *Server) fetchTrafficTile(ctx context.Context, z, x, y int) ([]byte, string, int) {
+func (s *Server) fetchTrafficTile(ctx context.Context, z, x, y, size int) ([]byte, string, int) {
 	base := s.trafficBase
 	if base == "" {
 		base = trafficTileURL
@@ -102,7 +119,7 @@ func (s *Server) fetchTrafficTile(ctx context.Context, z, x, y int) ([]byte, str
 	ctx, cancel := context.WithTimeout(ctx, trafficTimeout)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
-		trafficTileRequestURL(base, z, x, y, s.TomTomAPIKey), nil)
+		trafficTileRequestURL(base, z, x, y, size, s.TomTomAPIKey), nil)
 	if err != nil {
 		return nil, "", 0
 	}

@@ -35,10 +35,28 @@ func TestValidTileCoords(t *testing.T) {
 }
 
 func TestTrafficTileRequestURL(t *testing.T) {
-	got := trafficTileRequestURL("https://upstream.example/flow/relative", 12, 2044, 1360, "SECRET")
+	got := trafficTileRequestURL("https://upstream.example/flow/relative", 12, 2044, 1360, 256, "SECRET")
 	want := "https://upstream.example/flow/relative/12/2044/1360.png?tileSize=256&key=SECRET"
 	if got != want {
 		t.Fatalf("got %s want %s", got, want)
+	}
+	got = trafficTileRequestURL("https://upstream.example/flow/relative", 11, 1022, 680, 512, "SECRET")
+	want = "https://upstream.example/flow/relative/11/1022/680.png?tileSize=512&key=SECRET"
+	if got != want {
+		t.Fatalf("got %s want %s", got, want)
+	}
+}
+
+func TestParseTileSize(t *testing.T) {
+	for raw, want := range map[string]int{"": 256, "256": 256, "512": 512} {
+		if got, ok := parseTileSize(raw); !ok || got != want {
+			t.Errorf("parseTileSize(%q) = %d, %v", raw, got, ok)
+		}
+	}
+	for _, bad := range []string{"128", "1024", "abc", "-1", "512&key=x"} {
+		if _, ok := parseTileSize(bad); ok {
+			t.Errorf("parseTileSize(%q) should be rejected", bad)
+		}
 	}
 }
 
@@ -61,7 +79,10 @@ func TestTrafficTileNotConfigured(t *testing.T) {
 
 func TestTrafficTileRejectsBadCoordinates(t *testing.T) {
 	srv := &Server{TomTomAPIKey: "k"}
-	for _, path := range []string{"/traffic/tiles/3/9/1", "/traffic/tiles/30/0/0", "/traffic/tiles/a/0/0"} {
+	for _, path := range []string{
+		"/traffic/tiles/3/9/1", "/traffic/tiles/30/0/0", "/traffic/tiles/a/0/0",
+		"/traffic/tiles/3/1/1?size=1024",
+	} {
 		if w := trafficRequest(srv, path); w.Code != http.StatusBadRequest {
 			t.Errorf("%s: status = %d, want 400", path, w.Code)
 		}
@@ -69,22 +90,23 @@ func TestTrafficTileRejectsBadCoordinates(t *testing.T) {
 }
 
 func TestTrafficTileProxiesWithoutLeakingTheKey(t *testing.T) {
-	var gotPath, gotKey string
+	var gotPath, gotKey, gotSize string
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotPath = r.URL.Path
 		gotKey = r.URL.Query().Get("key")
+		gotSize = r.URL.Query().Get("tileSize")
 		w.Header().Set("Content-Type", "image/png")
 		_, _ = w.Write([]byte("PNGDATA"))
 	}))
 	defer upstream.Close()
 
 	srv := &Server{TomTomAPIKey: "SECRET", trafficBase: upstream.URL + "/flow/relative"}
-	w := trafficRequest(srv, "/traffic/tiles/3/4/5")
+	w := trafficRequest(srv, "/traffic/tiles/3/4/5?size=512")
 	if w.Code != http.StatusOK {
 		t.Fatalf("status = %d", w.Code)
 	}
-	if gotPath != "/flow/relative/3/4/5.png" || gotKey != "SECRET" {
-		t.Fatalf("upstream got path=%q key=%q", gotPath, gotKey)
+	if gotPath != "/flow/relative/3/4/5.png" || gotKey != "SECRET" || gotSize != "512" {
+		t.Fatalf("upstream got path=%q key=%q size=%q", gotPath, gotKey, gotSize)
 	}
 	if w.Body.String() != "PNGDATA" || w.Header().Get("Content-Type") != "image/png" {
 		t.Fatalf("unexpected body or type: %q %q", w.Body.String(), w.Header().Get("Content-Type"))
