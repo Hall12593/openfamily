@@ -539,7 +539,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const ListTile(
             leading: Icon(Icons.info_outline, color: AppColors.purple),
             title: Text('OpenFamily'),
-            subtitle: Text('Version 0.1.0'),
+            subtitle: Text('Version 0.1.1'),
           ),
           const Divider(height: 1),
           ListTile(
