@@ -1,7 +1,7 @@
 {
   "@@locale": "es",
   "languageSetting": "Idioma",
-  "languageSettingHelp": "Elige el idioma de la aplicación. Automático sigue el del dispositivo.",
+  "languageSettingHelp": "Elige el idioma de la aplicación. Automático usa el idioma predeterminado de tu servidor, o el de este dispositivo.",
   "languageAuto": "Automático",
   "languageEnglish": "English",
   "languageSpanish": "Español",

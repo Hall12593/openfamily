@@ -82,9 +82,12 @@ class _OpenFamilyAppState extends State<OpenFamilyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<LanguagePreference>(
-      valueListenable: LocalePreferenceService.preference,
-      builder: (context, language, _) {
+    return ListenableBuilder(
+      listenable: Listenable.merge(<Listenable>[
+        LocalePreferenceService.preference,
+        LocalePreferenceService.serverDefault,
+      ]),
+      builder: (context, _) {
         return ValueListenableBuilder<ThemePreference>(
           valueListenable: ThemePreferenceService.preference,
           builder: (context, preference, _) {
@@ -95,7 +98,7 @@ class _OpenFamilyAppState extends State<OpenFamilyApp> {
               theme: buildLightTheme(),
               darkTheme: buildDarkTheme(),
               themeMode: preference.themeMode,
-              locale: language.locale,
+              locale: LocalePreferenceService.effectiveLocale,
               localizationsDelegates: const [
                 AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
