@@ -6,7 +6,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openfamily/l10n/l10n.dart';
 import 'package:openfamily/screens/welcome_screen.dart';
+import 'package:openfamily/services/locale_preference.dart';
 import 'package:openfamily/services/member_mapper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, dynamic> _arb(String name) =>
     jsonDecode(File('lib/l10n/$name').readAsStringSync())
@@ -80,5 +82,55 @@ void main() {
 
     expect(find.text('Comenzar'), findsOneWidget);
     expect(find.text('Get Started'), findsNothing);
+  });
+
+  test('server default applies only when the user has not chosen', () {
+    const Locale es = Locale('es');
+    const Locale en = Locale('en');
+    expect(
+      LocalePreferenceService.resolveLocale(LanguagePreference.system, 'es'),
+      es,
+    );
+    expect(
+      LocalePreferenceService.resolveLocale(LanguagePreference.system, null),
+      isNull,
+    );
+    expect(
+      LocalePreferenceService.resolveLocale(LanguagePreference.system, 'fr'),
+      isNull,
+    );
+    expect(
+      LocalePreferenceService.resolveLocale(LanguagePreference.english, 'es'),
+      en,
+    );
+    expect(
+      LocalePreferenceService.resolveLocale(LanguagePreference.spanish, 'en'),
+      es,
+    );
+  });
+
+  test('the server default is read from /config and remembered', () async {
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    await LocalePreferenceService.applyServerDefault(
+      <String, dynamic>{'default_language': 'es'},
+    );
+    expect(LocalePreferenceService.serverDefault.value, 'es');
+
+    // A server that predates the field must not clear a known value.
+    await LocalePreferenceService.applyServerDefault(<String, dynamic>{});
+    expect(LocalePreferenceService.serverDefault.value, 'es');
+
+    // An empty value means "follow the device".
+    await LocalePreferenceService.applyServerDefault(
+      <String, dynamic>{'default_language': ''},
+    );
+    expect(LocalePreferenceService.serverDefault.value, isNull);
+
+    await LocalePreferenceService.applyServerDefault(
+      <String, dynamic>{'default_language': 'es'},
+    );
+    LocalePreferenceService.serverDefault.value = null;
+    await LocalePreferenceService.load();
+    expect(LocalePreferenceService.serverDefault.value, 'es');
   });
 }
