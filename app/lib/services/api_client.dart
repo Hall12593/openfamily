@@ -226,6 +226,23 @@ class ApiClient {
     return data as Map<String, dynamic>;
   }
 
+  /// GET [path] returning the raw response bytes (file downloads), with the
+  /// same auth refresh as the JSON helpers.
+  static Future<Uint8List> getBytes(
+    String path, {
+    Map<String, String>? query,
+  }) async {
+    final http.Response response = await _sendResponse(
+      'GET',
+      _uri(path, query: query),
+      accept: '*/*',
+    );
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      _throwForError(response);
+    }
+    return response.bodyBytes;
+  }
+
   /// GET /config → public ntfy/APNs/tile settings for the generic APK.
   static Future<Map<String, dynamic>> getPushConfig() async {
     final dynamic data = await _send('GET', _uri('/config'), auth: false);

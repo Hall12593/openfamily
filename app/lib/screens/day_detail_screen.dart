@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../l10n/l10n.dart';
 import '../models/member.dart';
@@ -80,6 +81,33 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
     }
   }
 
+  Future<void> _exportTrack(_ExportChoice choice) async {
+    try {
+      final TrackExport file = await HistoryService.exportTrack(
+        memberId: widget.member.id,
+        day: _day,
+        format: choice.format,
+        days: choice.days,
+      );
+      if (!mounted) return;
+      await Share.shareXFiles(
+        <XFile>[
+          XFile.fromData(file.bytes, mimeType: file.mimeType, name: file.filename),
+        ],
+        fileNameOverrides: <String>[file.filename],
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            e is ApiException ? e.message : context.l10n.exportTrackFailed,
+          ),
+        ),
+      );
+    }
+  }
+
   void _shiftDay(int days) {
     final DateTime next = _day.add(Duration(days: days));
     final DateTime clamped = DateTime(next.year, next.month, next.day);
@@ -151,7 +179,34 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.dayDetailTitle)),
+      appBar: AppBar(
+        title: Text(context.l10n.dayDetailTitle),
+        actions: [
+          PopupMenuButton<_ExportChoice>(
+            tooltip: context.l10n.exportTrack,
+            icon: const Icon(Icons.ios_share),
+            onSelected: _exportTrack,
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem<_ExportChoice>(
+                value: const _ExportChoice(TrackFormat.gpx, 1),
+                child: Text(context.l10n.exportDayGpx),
+              ),
+              PopupMenuItem<_ExportChoice>(
+                value: const _ExportChoice(TrackFormat.geojson, 1),
+                child: Text(context.l10n.exportDayGeoJson),
+              ),
+              PopupMenuItem<_ExportChoice>(
+                value: const _ExportChoice(TrackFormat.gpx, 7),
+                child: Text(context.l10n.exportWeekGpx),
+              ),
+              PopupMenuItem<_ExportChoice>(
+                value: const _ExportChoice(TrackFormat.geojson, 7),
+                child: Text(context.l10n.exportWeekGeoJson),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: Column(
         children: [
           _Header(
@@ -656,4 +711,12 @@ String _formatDuration(Duration d) {
     return '${hours}h ${mins}m';
   }
   return '${d.inMinutes} min';
+}
+
+/// One entry of the export menu: a file format and how many days it covers.
+class _ExportChoice {
+  const _ExportChoice(this.format, this.days);
+
+  final TrackFormat format;
+  final int days;
 }
