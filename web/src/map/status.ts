@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 // Status + movement derivation — a TypeScript port of the Flutter app's
 // app/lib/services/member_mapper.dart.
 //
@@ -138,14 +139,14 @@ export function addressFrom(
   movement: MovementType,
   nowMs: number,
 ): string {
-  if (position == null) return "No location yet";
+  if (position == null) return t("No location yet");
   if (movement === "car") return "Driving";
   if (movement === "bike") return "Biking";
   if (movement === "walking") return "Walking";
   if (movement === "running") return "Running";
-  if (ts == null) return "No location yet";
+  if (ts == null) return t("No location yet");
   const age = nowMs - ts;
-  if (age > STALE_AFTER_MS) return `Position from ${formatAgo(age)} ago`;
+  if (age > STALE_AFTER_MS) return t("Position from {age} ago", { age: formatAgo(age) });
   return "Stationary";
 }
 
@@ -219,7 +220,7 @@ export function lastSeenLabel(member: Member, nowMs: number): string {
   if (member.lastSeen == null) return "never";
   const age = nowMs - member.lastSeen;
   if (age < 0) return "just now";
-  if (age > STALE_AFTER_MS) return `Last seen ${formatAgo(age)} ago`;
+  if (age > STALE_AFTER_MS) return t("Last seen {age} ago", { age: formatAgo(age) });
   return `${formatAgo(age)} ago`;
 }
 
@@ -257,7 +258,7 @@ export function deriveMember(
 
   return {
     id: raw.id ?? "",
-    name: raw.name ?? "Member",
+    name: raw.name ?? t("Member"),
     familyId,
     familyName,
     avatarColor,
@@ -369,7 +370,7 @@ export function applyLocationUpdate(
  * members without duplicating the prefix knowledge.
  */
 export function isStaleAddress(address: string): boolean {
-  return address.startsWith("Position from");
+  return address.startsWith(t("Position from {age} ago").split("{age}")[0]);
 }
 
 /**
@@ -389,7 +390,7 @@ export function refreshStaleness(member: Member, nowMs: number): Member {
   if (member.position == null || member.lastSeen == null) return member;
   const age = nowMs - member.lastSeen;
   if (age <= STALE_AFTER_MS) return member;
-  const label = `Position from ${formatAgo(age)} ago`;
+  const label = t("Position from {age} ago", { age: formatAgo(age) });
   if (member.status === "stopped" && member.address === label) return member;
   return { ...member, status: "stopped", address: label };
 }
