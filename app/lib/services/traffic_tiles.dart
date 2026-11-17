@@ -28,9 +28,12 @@ class ApiTileProvider extends TileProvider {
   @override
   ImageProvider getImage(TileCoordinates coordinates, TileLayer options) {
     return ApiTileImage(
-      z: coordinates.z,
+      // The layer's zoom offset lets 512 px tiles cover the same area as 256 px
+      // tiles one level up, so the server is asked for the matching level.
+      z: coordinates.z + options.zoomOffset.round(),
       x: coordinates.x,
       y: coordinates.y,
+      size: options.tileSize.round() >= 512 ? 512 : 256,
       fetch: fetch,
     );
   }
@@ -43,15 +46,20 @@ class ApiTileImage extends ImageProvider<ApiTileImage> {
     required this.z,
     required this.x,
     required this.y,
+    this.size = 256,
     this.fetch = _fetchFromServer,
   });
 
   final int z;
   final int x;
   final int y;
+
+  /// Tile edge in pixels (256 or 512).
+  final int size;
   final TileFetcher fetch;
 
-  String get path => '/traffic/tiles/$z/$x/$y';
+  String get path =>
+      '/traffic/tiles/$z/$x/$y${size == 256 ? '' : '?size=$size'}';
 
   @override
   Future<ApiTileImage> obtainKey(ImageConfiguration configuration) =>
@@ -74,8 +82,12 @@ class ApiTileImage extends ImageProvider<ApiTileImage> {
 
   @override
   bool operator ==(Object other) =>
-      other is ApiTileImage && other.z == z && other.x == x && other.y == y;
+      other is ApiTileImage &&
+      other.z == z &&
+      other.x == x &&
+      other.y == y &&
+      other.size == size;
 
   @override
-  int get hashCode => Object.hash(z, x, y);
+  int get hashCode => Object.hash(z, x, y, size);
 }

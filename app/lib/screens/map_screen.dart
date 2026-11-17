@@ -805,7 +805,17 @@ class _MapScreenState extends State<MapScreen>
                   urlTemplate: kTrafficTileTemplate,
                   tileProvider: ApiTileProvider(),
                   userAgentPackageName: 'app.openfamily',
-                  maxNativeZoom: 18,
+                  // 512 px tiles one zoom level up cover the same area with a
+                  // quarter of the requests; old-zoom tiles stay on screen until
+                  // every new tile arrives, so fewer, larger tiles clear faster.
+                  tileSize: 512,
+                  zoomOffset: -1,
+                  maxNativeZoom: 19,
+                  panBuffer: 0,
+                  keepBuffer: 1,
+                  tileUpdateTransformer: TileUpdateTransformers.debounce(
+                    const Duration(milliseconds: 150),
+                  ),
                   evictErrorTileStrategy: EvictErrorTileStrategy.dispose,
                 ),
               // Saved places: the arrive/leave radius and an icon with the name.
