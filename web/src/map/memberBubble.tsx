@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 // Member avatar bubble + movement badges, and Leaflet divIcon builders for the
 // map. Mirrors app/lib/widgets/member_avatar_bubble.dart:
 //   - a circular avatar (photo or initials on the group accent) at full size,
@@ -36,15 +37,15 @@ export function statusColor(status: MemberStatus): string {
 export function statusLabel(status: MemberStatus): string {
   switch (status) {
     case "normal":
-      return "Live";
+      return t("Live");
     case "warning":
-      return "Low battery";
+      return t("Low battery");
     case "gpsIssue":
-      return "GPS issue";
+      return t("GPS issue");
     case "stopped":
-      return "Updates stopped";
+      return t("Updates stopped");
     case "error":
-      return "Location error";
+      return t("Location error");
   }
 }
 
