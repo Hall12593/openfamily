@@ -9,6 +9,38 @@ import '../services/place_service.dart';
 import '../theme/app_theme.dart';
 import 'place_picker_screen.dart';
 
+/// Opens the place picker seeded with [place] and, when the user saves,
+/// stores the changes (name, icon, position, radius, address). Returns the
+/// stored place with its alert state preserved, or null when cancelled. Throws
+/// when the server rejects the change.
+Future<Place?> editPlace(BuildContext context, Place place) async {
+  final Place? picked = await Navigator.of(context).push<Place>(
+    MaterialPageRoute<Place>(
+      builder: (_) => PlacePickerScreen(
+        placeName: place.name,
+        icon: place.icon,
+        type: place.type,
+        initial: place,
+      ),
+    ),
+  );
+  if (picked == null) return null;
+  final Place saved = await PlaceService.updatePlace(
+    id: place.id,
+    name: picked.name,
+    type: picked.type,
+    lat: picked.position.latitude,
+    lon: picked.position.longitude,
+    radiusMeters: picked.radiusMeters,
+    address: picked.address,
+  );
+  // Keep the client-side alert state; it is not part of the place.
+  return saved.copyWith(
+    alertsOn: place.alertsOn,
+    geofenceId: place.geofenceId,
+  );
+}
+
 /// The Places / geofences list screen. Lists saved Places with their radius
 /// and an arrive/leave alert toggle, and lets the user add a new Place.
 class PlacesScreen extends StatefulWidget {
@@ -118,34 +150,10 @@ class _PlacesScreenState extends State<PlacesScreen> {
 
   Future<void> _editPlace(int index) async {
     final Place place = _places![index];
-    final Place? picked = await Navigator.of(context).push<Place>(
-      MaterialPageRoute<Place>(
-        builder: (_) => PlacePickerScreen(
-          placeName: place.name,
-          icon: place.icon,
-          type: place.type,
-          initial: place,
-        ),
-      ),
-    );
-    if (picked == null || !mounted) return;
     try {
-      final Place saved = await PlaceService.updatePlace(
-        id: place.id,
-        name: picked.name,
-        lat: picked.position.latitude,
-        lon: picked.position.longitude,
-        radiusMeters: picked.radiusMeters,
-        address: picked.address,
-      );
-      if (!mounted) return;
-      setState(() {
-        // Keep the client-side alert state; it is not part of the place.
-        _places![index] = saved.copyWith(
-          alertsOn: place.alertsOn,
-          geofenceId: place.geofenceId,
-        );
-      });
+      final Place? saved = await editPlace(context, place);
+      if (saved == null || !mounted) return;
+      setState(() => _places![index] = saved);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -272,7 +280,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
             child: Text(
               context.l10n.noPlacesYet,
               textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.textMuted),
+              style: TextStyle(color: BrandTheme.of(context).muted),
             ),
           ),
           if (_canManage) _AddPlaceTile(onTap: _addPlace),
@@ -324,7 +332,7 @@ class _PlaceTile extends StatelessWidget {
           shape: BoxShape.circle,
           color: AppColors.purple.withValues(alpha: 0.12),
         ),
-        child: Icon(place.icon, color: AppColors.purple, size: 22),
+        child: Icon(place.icon, color: BrandTheme.of(context).accentInk, size: 22),
       ),
       title: Text(
         place.name,
@@ -341,20 +349,20 @@ class _PlaceTile extends StatelessWidget {
                 place.alertsOn
                     ? Icons.notifications_active
                     : Icons.notifications_off,
-                color: place.alertsOn ? AppColors.purple : AppColors.textMuted,
+                color: place.alertsOn ? BrandTheme.of(context).accentInk : BrandTheme.of(context).muted,
               ),
               onPressed: toggling ? null : onToggleAlerts,
             ),
           if (onEdit != null)
             IconButton(
               tooltip: context.l10n.editPlace,
-              icon: const Icon(Icons.edit_outlined, color: AppColors.textMuted),
+              icon: Icon(Icons.edit_outlined, color: BrandTheme.of(context).muted),
               onPressed: onEdit,
             ),
           if (onDelete != null)
             IconButton(
               tooltip: context.l10n.deletePlace,
-              icon: const Icon(Icons.delete_outline, color: AppColors.textMuted),
+              icon: Icon(Icons.delete_outline, color: BrandTheme.of(context).muted),
               onPressed: onDelete,
             ),
         ],
@@ -371,10 +379,10 @@ class _AddPlaceTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.add_circle_outline, color: AppColors.purple),
+      leading: Icon(Icons.add_circle_outline, color: BrandTheme.of(context).accentInk),
       title: Text(
         context.l10n.addAPlace,
-        style: TextStyle(color: AppColors.purple, fontWeight: FontWeight.w600),
+        style: TextStyle(color: BrandTheme.of(context).accentInk, fontWeight: FontWeight.w600),
       ),
       onTap: onTap,
     );

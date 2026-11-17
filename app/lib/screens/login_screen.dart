@@ -200,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.white,
+                                color: AppColors.onAccent,
                               ),
                             )
                           : Text(context.l10n.actionLogIn),
@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         context.l10n.dontHaveAccount,
                         style: TextStyle(
                           fontSize: 13,
-                          color: AppColors.textMuted,
+                          color: BrandTheme.of(context).muted,
                         ),
                       ),
                       TextButton(

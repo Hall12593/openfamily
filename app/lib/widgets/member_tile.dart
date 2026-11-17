@@ -116,7 +116,7 @@ class MemberTile extends StatelessWidget {
       chips.add(
         _StatusChip(
           icon: Icons.schedule,
-          color: AppColors.purple,
+          color: BrandTheme.of(context).accentInk,
           label: context.l10n.etaWithValue(member.eta!),
         ),
       );
@@ -126,7 +126,7 @@ class MemberTile extends StatelessWidget {
       chips.add(
         _StatusChip(
           icon: Icons.directions_car,
-          color: member.isSpeeding ? const Color(0xFFE65100) : AppColors.purple,
+          color: member.isSpeeding ? const Color(0xFFE65100) : BrandTheme.of(context).accentInk,
           label: Units.speed(member.speedMps!, metric: Units.current),
         ),
       );

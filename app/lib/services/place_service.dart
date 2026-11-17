@@ -49,11 +49,12 @@ class PlaceService {
     return place;
   }
 
-  /// Updates a place's name, position, radius and address, and returns the
-  /// stored [Place]. The place type is left unchanged.
+  /// Updates a place's name, icon type, position, radius and address, and
+  /// returns the stored [Place].
   static Future<Place> updatePlace({
     required String id,
     required String name,
+    required String type,
     required double lat,
     required double lon,
     required double radiusMeters,
@@ -61,6 +62,7 @@ class PlaceService {
   }) async {
     final Map<String, dynamic> body = <String, dynamic>{
       'name': name,
+      'type': type,
       'lat': lat,
       'lon': lon,
       'radius_meters': radiusMeters,

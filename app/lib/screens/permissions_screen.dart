@@ -288,7 +288,7 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.white,
+                                color: AppColors.onAccent,
                               ),
                             )
                           : Text(
@@ -366,12 +366,12 @@ class _PermissionStepView extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: granted
                       ? AppColors.statusGreen.withValues(alpha: 0.12)
-                      : AppColors.surfaceTint,
+                      : BrandTheme.of(context).paper,
                 ),
                 child: Icon(
                   granted ? Icons.check_circle : step.icon,
                   size: 48,
-                  color: granted ? AppColors.statusGreen : AppColors.purple,
+                  color: granted ? AppColors.statusGreen : BrandTheme.of(context).accentInk,
                 ),
               ),
               const SizedBox(height: 24),
@@ -402,7 +402,7 @@ class _PermissionStepView extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.purple,
+                          color: BrandTheme.of(context).accentInk,
                         ),
                       ),
                     ),
@@ -413,10 +413,10 @@ class _PermissionStepView extends StatelessWidget {
               Text(
                 step.why,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   height: 1.4,
-                  color: AppColors.textMuted,
+                  color: BrandTheme.of(context).muted,
                 ),
               ),
               if (denied) ...[

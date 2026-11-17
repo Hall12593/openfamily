@@ -633,5 +633,34 @@
   "exportDayGeoJson": "This day as GeoJSON",
   "exportWeekGpx": "Last 7 days as GPX",
   "exportWeekGeoJson": "Last 7 days as GeoJSON",
-  "exportTrackFailed": "Couldn't export the track. Please try again."
+  "exportTrackFailed": "Couldn't export the track. Please try again.",
+  "placeIconLabel": "Icon",
+  "placeTypeFamily": "Family",
+  "placeTypeFriend": "Friend",
+  "placeTypeStore": "Store",
+  "placeTypeHealth": "Health",
+  "placeTypePark": "Park",
+  "placeTypeFood": "Food",
+  "placeTypeWorship": "Worship",
+  "placeTypeOther": "Other",
+  "placeRadiusLabel": "Alert radius {radius}",
+  "placeEditAction": "Edit",
+  "closeAction": "Close",
+  "@placeRadiusLabel": {
+    "placeholders": {
+      "radius": {
+        "type": "String"
+      }
+    }
+  },
+  "helpQuickMessages": "Quick messages",
+  "helpPresetCar": "My car broke down",
+  "helpPresetUnsafe": "I don't feel safe",
+  "helpPresetLost": "I'm lost",
+  "helpPresetFollowed": "Someone is following me",
+  "helpPresetAccident": "I had an accident",
+  "helpPresetRide": "I need a ride",
+  "helpPresetUnwell": "I don't feel well",
+  "helpMessageLabel": "Message (optional)",
+  "helpMessageHint": "Add details for your family"
 }

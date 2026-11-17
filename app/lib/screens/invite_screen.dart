@@ -109,7 +109,7 @@ class _InviteScreenState extends State<InviteScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const Spacer(),
-        const Icon(Icons.person_add_alt_1, size: 64, color: AppColors.purple),
+        Icon(Icons.person_add_alt_1, size: 64, color: BrandTheme.of(context).accentInk),
         const SizedBox(height: 16),
         Text(
           context.l10n.inviteYourFamily,
@@ -120,7 +120,7 @@ class _InviteScreenState extends State<InviteScreen> {
         Text(
           context.l10n.shareCodeToJoin(circle),
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 15, color: AppColors.textMuted),
+          style: TextStyle(fontSize: 15, color: BrandTheme.of(context).muted),
         ),
         const Spacer(),
         FilledButton(
@@ -148,33 +148,33 @@ class _InviteScreenState extends State<InviteScreen> {
         Text(
           context.l10n.shareCodeHint,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+          style: TextStyle(fontSize: 14, color: BrandTheme.of(context).muted),
         ),
         const SizedBox(height: 20),
         Container(
           padding: const EdgeInsets.symmetric(vertical: 20),
           decoration: BoxDecoration(
-            color: AppColors.surfaceTint,
+            color: BrandTheme.of(context).paper,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
             children: [
               Text(
                 _code!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 8,
-                  color: AppColors.purple,
+                  color: BrandTheme.of(context).accentInk,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
                 ServerConfig.instance.apiBaseUrl,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
-                  color: AppColors.textMuted,
+                  color: BrandTheme.of(context).muted,
                 ),
               ),
               const SizedBox(height: 8),

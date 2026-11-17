@@ -257,9 +257,9 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
                   : ListView(
                       children: [
                         ListTile(
-                          leading: const Icon(
+                          leading: Icon(
                             Icons.group_outlined,
-                            color: AppColors.purple,
+                            color: BrandTheme.of(context).accentInk,
                           ),
                           title: Text(_family!.name),
                           subtitle: Text(_roleLabel(_family!.role)),
@@ -273,9 +273,9 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
                         ),
                         if (_isAdmin)
                           ListTile(
-                            leading: const Icon(
+                            leading: Icon(
                               Icons.person_add_alt_1,
-                              color: AppColors.purple,
+                              color: BrandTheme.of(context).accentInk,
                             ),
                             title: Text(context.l10n.inviteSomeone),
                             trailing: const Icon(Icons.chevron_right),
@@ -377,7 +377,7 @@ class _NoFamily extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.group_outlined, size: 64, color: AppColors.purple),
+          Icon(Icons.group_outlined, size: 64, color: BrandTheme.of(context).accentInk),
           const SizedBox(height: 16),
           Text(
             context.l10n.noFamilyTitle,

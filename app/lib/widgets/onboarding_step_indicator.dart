@@ -44,10 +44,10 @@ class OnboardingStepIndicator extends StatelessWidget
                 ? context.l10n.stepNumber('$currentStep')
                 : context.l10n.stepNumberOfTotal('$currentStep', '$total'),
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: AppColors.purple,
+              color: BrandTheme.of(context).accentInk,
             ),
           ),
           if (progress != null) ...[

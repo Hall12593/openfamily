@@ -111,7 +111,7 @@ class _JoinCircleScreenState extends State<JoinCircleScreen> {
         const SizedBox(height: 8),
         Text(
           context.l10n.enterInviteCodeBody,
-          style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+          style: TextStyle(fontSize: 14, color: BrandTheme.of(context).muted),
         ),
         const SizedBox(height: 20),
         TextField(
@@ -142,7 +142,7 @@ class _JoinCircleScreenState extends State<JoinCircleScreen> {
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.white,
+                        color: AppColors.onAccent,
                       ),
                     )
                   : Text(context.l10n.actionJoin),
@@ -167,7 +167,7 @@ class _JoinCircleScreenState extends State<JoinCircleScreen> {
         Text(
           context.l10n.familyJoinedBody,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 15, color: AppColors.textMuted),
+          style: TextStyle(fontSize: 15, color: BrandTheme.of(context).muted),
         ),
         const SizedBox(height: 24),
         FilledButton(

@@ -240,7 +240,7 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
               Text(
                 _error!,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textMuted),
+                style: TextStyle(color: BrandTheme.of(context).muted),
               ),
               const SizedBox(height: 12),
               TextButton(onPressed: _load, child: Text(context.l10n.actionRetry)),
@@ -257,7 +257,7 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
           child: Text(
             context.l10n.noHistoryForDay,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.textMuted, fontSize: 15),
+            style: TextStyle(color: BrandTheme.of(context).muted, fontSize: 15),
           ),
         ),
       );
@@ -332,9 +332,9 @@ class _Header extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   _formatDate(day),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
-                    color: AppColors.textMuted,
+                    color: BrandTheme.of(context).muted,
                   ),
                 ),
               ],
@@ -460,7 +460,7 @@ class _TimelineEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     final MovementType movement = _movementFor(visit);
     final Color dotColor =
-        visit.isTransit ? AppColors.textMuted : AppColors.purple;
+        visit.isTransit ? BrandTheme.of(context).muted : AppColors.purple;
     final Duration stay = visit.departedAt.difference(visit.arrivedAt);
 
     return IntrinsicHeight(
@@ -474,10 +474,10 @@ class _TimelineEntry extends StatelessWidget {
               child: Text(
                 _formatTime(visit.arrivedAt.toLocal()),
                 textAlign: TextAlign.right,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textMuted,
+                  color: BrandTheme.of(context).muted,
                 ),
               ),
             ),
@@ -527,9 +527,9 @@ class _TimelineEntry extends StatelessWidget {
                         if (stay.inMinutes >= 1)
                           Text(
                             _formatDuration(stay),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 12,
-                              color: AppColors.textMuted,
+                              color: BrandTheme.of(context).muted,
                             ),
                           ),
                       ],
@@ -543,14 +543,14 @@ class _TimelineEntry extends StatelessWidget {
                     Icon(
                       _visitIcon(visit),
                       size: 18,
-                      color: AppColors.purple,
+                      color: BrandTheme.of(context).accentInk,
                     ),
                   ],
                   if (canSave)
                     IconButton(
                       tooltip: context.l10n.saveAsPlace,
                       icon: const Icon(Icons.add_location_alt_outlined),
-                      color: AppColors.purple,
+                      color: BrandTheme.of(context).accentInk,
                       onPressed: onSave,
                     ),
                 ],

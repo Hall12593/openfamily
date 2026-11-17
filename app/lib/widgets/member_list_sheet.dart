@@ -202,9 +202,9 @@ class _PeopleHeader extends StatelessWidget {
                   IconButton(
                     onPressed: onAddPerson,
                     tooltip: context.l10n.inviteSomeoneTo(circleName),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.person_add_alt_1,
-                      color: AppColors.purple,
+                      color: BrandTheme.of(context).accentInk,
                     ),
                   ),
                   IconButton(
@@ -214,7 +214,7 @@ class _PeopleHeader extends StatelessWidget {
                       expanded
                           ? Icons.keyboard_arrow_down_rounded
                           : Icons.keyboard_arrow_up_rounded,
-                      color: AppColors.purple,
+                      color: BrandTheme.of(context).accentInk,
                     ),
                   ),
                 ],
@@ -272,10 +272,10 @@ class _AvatarStack extends StatelessWidget {
           color: AppColors.purple.withValues(alpha: 0.10),
           shape: BoxShape.circle,
         ),
-        child: const Icon(
+        child: Icon(
           Icons.people_alt_outlined,
           size: 21,
-          color: AppColors.purple,
+          color: BrandTheme.of(context).accentInk,
         ),
       );
     }

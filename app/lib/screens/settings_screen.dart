@@ -395,25 +395,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             _SectionHeader(context.l10n.sectionAccount),
           ListTile(
-            leading: const Icon(Icons.person_outline, color: AppColors.purple),
+            leading: Icon(Icons.person_outline, color: BrandTheme.of(context).accentInk),
             title: Text(context.l10n.profileTitle),
             trailing:
-                const Icon(Icons.chevron_right, color: AppColors.textMuted),
+                Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const ProfileScreen()),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.group_outlined, color: AppColors.purple),
+            leading: Icon(Icons.group_outlined, color: BrandTheme.of(context).accentInk),
             title: Text(context.l10n.familyLabel),
             trailing:
-                const Icon(Icons.chevron_right, color: AppColors.textMuted),
+                Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const FamiliesScreen()),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.dns_outlined, color: AppColors.purple),
+            leading: Icon(Icons.dns_outlined, color: BrandTheme.of(context).accentInk),
             title: Text(context.l10n.serverLabel),
             subtitle: Text(
               ServerConfig.instance.apiBaseUrl.isEmpty
@@ -421,7 +421,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   : ServerConfig.instance.apiBaseUrl,
             ),
             trailing:
-                const Icon(Icons.chevron_right, color: AppColors.textMuted),
+                Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
             onTap: _changeServer,
           ),
             const Divider(height: 1),
@@ -432,9 +432,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const Divider(height: 1),
             _SectionHeader(context.l10n.privacySecurityHeader),
           SwitchListTile(
-            secondary: const Icon(
+            secondary: Icon(
               Icons.fingerprint,
-              color: AppColors.purple,
+              color: BrandTheme.of(context).accentInk,
             ),
             title: Text(context.l10n.biometricUnlock),
             subtitle: Text(
@@ -454,9 +454,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           if (_biometricEnabled) ...[
             const Divider(height: 1),
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.lock_clock_outlined,
-                color: AppColors.purple,
+                color: BrandTheme.of(context).accentInk,
               ),
               title: Text(context.l10n.lockDelay),
               subtitle: Text(
@@ -495,7 +495,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _SectionHeader(context.l10n.sectionLocation),
           SwitchListTile(
             secondary:
-                const Icon(Icons.location_on_outlined, color: AppColors.purple),
+                Icon(Icons.location_on_outlined, color: BrandTheme.of(context).accentInk),
             title: Text(context.l10n.locationSharing),
             subtitle: Text(context.l10n.locationSharingHelp,
             ),
@@ -504,23 +504,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           if (BatteryOptimizationService.isSupported)
             ListTile(
-              leading: const Icon(
+              leading: Icon(
                 Icons.battery_alert_outlined,
-                color: AppColors.purple,
+                color: BrandTheme.of(context).accentInk,
               ),
               title: Text(context.l10n.backgroundUpdates),
               subtitle: Text(
                 context.l10n.backgroundUpdatesHelp,
               ),
               trailing:
-                  const Icon(Icons.chevron_right, color: AppColors.textMuted),
+                  Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
                   onTap: BatteryOptimizationService.openSettings,
             ),
           const Divider(height: 1),
           _SectionHeader(context.l10n.notificationsTitle),
           SwitchListTile(
-            secondary: const Icon(Icons.notifications_outlined,
-                color: AppColors.purple),
+            secondary: Icon(Icons.notifications_outlined,
+                color: BrandTheme.of(context).accentInk),
             title: Text(context.l10n.pushNotifications),
             subtitle: Text(pushNotificationsSubtitle(isWeb: kIsWeb)),
             value: _notifications,
@@ -529,15 +529,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(height: 1),
           _SectionHeader(context.l10n.sectionAbout),
           ListTile(
-            leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.purple),
+            leading: Icon(Icons.privacy_tip_outlined, color: BrandTheme.of(context).accentInk),
             title: Text(context.l10n.privacyPolicy),
-            trailing: const Icon(Icons.chevron_right, color: AppColors.textMuted),
+            trailing: Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const PrivacyPolicyScreen()),
             ),
           ),
-          const ListTile(
-            leading: Icon(Icons.info_outline, color: AppColors.purple),
+          ListTile(
+            leading: Icon(Icons.info_outline, color: BrandTheme.of(context).accentInk),
             title: Text('OpenFamily'),
             subtitle: Text('Version 0.1.0'),
           ),
