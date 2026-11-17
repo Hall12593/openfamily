@@ -277,9 +277,9 @@ export function getFamilyMemberHistory(
   )
 }
 
-/** One live-traffic tile (PNG) from the server's traffic proxy. */
+/** One 512 px live-traffic tile (PNG) from the server's traffic proxy. */
 export function getTrafficTile(z: number, x: number, y: number): Promise<Blob> {
-  return request<Blob>(`/traffic/tiles/${z}/${x}/${y}`, { binary: true, accept: 'image/png,*/*;q=0.5' })
+  return request<Blob>(`/traffic/tiles/${z}/${x}/${y}?size=512`, { binary: true, accept: 'image/png,*/*;q=0.5' })
 }
 
 export interface LanguageSettings {
