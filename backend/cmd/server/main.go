@@ -67,6 +67,15 @@ func main() {
 	srv := handlers.New(pool, tm, dispatcher)
 	srv.VerbosePush = cfg.VerbosePush
 	srv.NtfyBaseURL = cfg.NtfyBaseURL
+	if lang, ok := handlers.NormalizeLanguage(cfg.DefaultLanguage); ok {
+		srv.DefaultLanguageEnv = lang
+	} else {
+		slog.Warn("ignoring unsupported DEFAULT_LANGUAGE", "value", cfg.DefaultLanguage)
+	}
+	if err := srv.LoadLanguageSettings(ctx); err != nil {
+		slog.Error("language settings", "err", err)
+		os.Exit(1)
+	}
 	srv.TileURL = cfg.TileURL
 	srv.SatelliteTileURL = cfg.SatelliteTileURL
 	srv.APNsConfigured = cfg.APNsKeyFile != ""
@@ -248,6 +257,8 @@ func main() {
 		r.Get("/api/admin/settings/sms", srv.AdminGetSMSSettings)
 		r.Put("/api/admin/settings/sms", srv.AdminPutSMSSettings)
 		r.Delete("/api/admin/settings/sms", srv.AdminDeleteSMSSettings)
+		r.Get("/api/admin/settings/language", srv.AdminGetLanguageSettings)
+		r.Put("/api/admin/settings/language", srv.AdminPutLanguageSettings)
 
 		// Domain status: read-only mirror of SITE_ADDRESS plus live DNS and
 		// HTTPS health checks for the admin panel card.
