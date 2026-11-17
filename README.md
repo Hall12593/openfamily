@@ -322,13 +322,19 @@ builds on Gradle 8).
 
 ### Push
 
-- **Android:** install [ntfy](https://ntfy.sh/) (or another UnifiedPush
-  distributor). The API advertises `NTFY_BASE_URL` on `GET /config` so the
-  generic APK can register without a rebuild. The app only uses that value
-  when it is `https://`; with a plain-HTTP `NTFY_BASE_URL` it is ignored and
-  the ntfy app registers against its own default server (`ntfy.sh`). Use an
-  HTTPS ntfy (`PUSH_ADDRESS`), or change the default server in the ntfy app on
-  every phone.
+- **Android, built in:** each phone keeps one authenticated WebSocket to
+  `GET /ws/device` (credential: the device ingest key). Alerts and location
+  requests travel over it with no extra app. Notifications raised while the
+  phone is offline are stored and replayed, once, when it reconnects. The
+  connection is held by the background location service, so it needs the
+  location permission set to "Allow all the time" (the same requirement as
+  background tracking).
+- **Android, optional:** install [ntfy](https://ntfy.sh/) (or another
+  UnifiedPush distributor) as a fallback. The API advertises `NTFY_BASE_URL`
+  on `GET /config` so the generic APK can register without a rebuild. The app
+  only uses that value when it is `https://`; with a plain-HTTP
+  `NTFY_BASE_URL` it is ignored and the ntfy app registers against its own
+  default server (`ntfy.sh`).
 - **iOS:** APNs. Requires an Apple Developer account and an auth key — see
   [Configuration](#configuration). Payloads do not include coordinates.
 
@@ -631,6 +637,7 @@ For a fully private map, host your own tiles. The simplest option is
 | POST | `/alerts/{id}/resolve` | I'm-safe follow-up (sender only) |
 | GET | `/alerts/share/{token}` | Public 24h share page (no auth) |
 | WS | `/ws/stream` | Live position stream (family-scoped) |
+| WS | `/ws/device` | Per-device notifications and commands (`X-Device-Key` ingest key) |
 
 </details>
 

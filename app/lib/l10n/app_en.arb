@@ -423,7 +423,7 @@
   "sosButtonSemantics": "SOS. Tap to send a real alert. Press and hold to arm discreetly.",
   "sosHoldHint": "Keep holding… release to start the countdown",
   "sosTapHint": "Tap to send · press and hold to arm discreetly",
-  "pushHelpAndroid": "Android needs the ntfy app (UnifiedPush) so alerts arrive when OpenFamily is closed. Off unregisters this device.",
+  "pushHelpAndroid": "Alerts reach this phone through your server while OpenFamily's background service is running. A UnifiedPush app such as ntfy is optional. Off unregisters this device.",
   "pushHelpIos": "Delivered through your server via APNs. Off unregisters this device.",
   "pushHelpWeb": "Push delivery is not available in the browser preview. This preference is remembered for the installed apps.",
   "pushHelpDefault": "Off unregisters this device from push notifications.",

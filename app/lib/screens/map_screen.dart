@@ -12,6 +12,7 @@ import '../services/api_client.dart';
 import '../services/app_config.dart';
 import '../services/background_location_service.dart';
 import '../services/battery_optimization_service.dart';
+import '../services/device_channel_host.dart';
 import '../services/device_service.dart';
 import '../services/family_service.dart';
 import '../services/location_reporter.dart';
@@ -132,6 +133,7 @@ class _MapScreenState extends State<MapScreen>
     _checkLocation();
     _initLocationSharing();
     PushService.sync();
+    DeviceChannelHost.ensureRunning();
     unawaited(_refreshServerFeatures());
     // One-time Android battery-optimization guidance (keeps background
     // updates alive when the app is closed). No-op elsewhere. Runs after the
@@ -321,6 +323,9 @@ class _MapScreenState extends State<MapScreen>
   /// backgrounded, then restarts the foreground reporter and refreshes family
   /// data.
   Future<void> _onResumed() async {
+    // Make sure the notification channel is up (no-op while it already is, or
+    // while the background service holds it).
+    DeviceChannelHost.ensureRunning();
     // Pick up any tokens the background isolate rotated (and wrote only to
     // shared_preferences) so the foreground reporter uses the current,
     // non-revoked refresh token instead of racing the background isolate.
