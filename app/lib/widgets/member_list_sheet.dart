@@ -158,8 +158,8 @@ class _PeopleHeader extends StatelessWidget {
                       button: true,
                       label: '$circleName people, $countLabel, $stateLabel',
                       hint: expanded
-                          ? 'Double tap to collapse the people drawer'
-                          : 'Double tap to expand the people drawer',
+                          ? context.l10n.collapsePeopleHint
+                          : context.l10n.expandPeopleHint,
                       child: InkWell(
                         onTap: onToggle,
                         borderRadius: BorderRadius.circular(16),
@@ -209,7 +209,7 @@ class _PeopleHeader extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: onToggle,
-                    tooltip: expanded ? 'Collapse people' : 'Expand people',
+                    tooltip: expanded ? context.l10n.collapsePeople : context.l10n.expandPeople,
                     icon: Icon(
                       expanded
                           ? Icons.keyboard_arrow_down_rounded

@@ -174,7 +174,7 @@ class _LocationRefreshButtonState extends State<_LocationRefreshButton> {
     if (_sending) return;
     setState(() {
       _sending = true;
-      _status = 'Requesting a fresh location…';
+      _status = context.l10n.requestingFreshLocation;
     });
     try {
       final Map<String, dynamic> response =
@@ -183,9 +183,9 @@ class _LocationRefreshButtonState extends State<_LocationRefreshButton> {
       final String status = response['status'] as String? ?? 'queued';
       setState(() {
         _status = switch (status) {
-          'cooldown' => 'A recent location request is still cooling down.',
-          'coalesced' => 'A location request is already in progress.',
-          _ => 'Request sent. The map will update when the phone responds.',
+          'cooldown' => context.l10n.locationRequestCooldown,
+          'coalesced' => context.l10n.locationRequestInProgress,
+          _ => context.l10n.locationRequestSent,
         };
       });
     } on ApiException catch (error) {
@@ -193,7 +193,7 @@ class _LocationRefreshButtonState extends State<_LocationRefreshButton> {
       setState(() => _status = error.message);
     } catch (_) {
       if (!mounted) return;
-      setState(() => _status = 'Could not request a location right now.');
+      setState(() => _status = context.l10n.locationRequestFailed);
     } finally {
       if (mounted) setState(() => _sending = false);
     }

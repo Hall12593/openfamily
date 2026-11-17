@@ -46,11 +46,11 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
   Future<void> _save() async {
     final url = _controller.text.trim();
     if (url.isEmpty) {
-      setState(() => _error = 'Please enter your server URL.');
+      setState(() => _error = context.l10n.enterServerUrl);
       return;
     }
     if (normalizeHttpsBaseUrl(url) == null) {
-      setState(() => _error = 'Enter a valid HTTPS server URL.');
+      setState(() => _error = context.l10n.enterValidHttpsUrl);
       return;
     }
     setState(() {
@@ -79,7 +79,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
       if (!mounted) return;
       setState(() {
         _saving = false;
-        _error = 'Could not reach that server. Check the URL and try again.';
+        _error = context.l10n.serverUnreachable;
       });
     }
   }
@@ -106,9 +106,8 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
                     ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Requires a self-hosted OpenFamily server with HTTPS.\n'
-                'Ask your family administrator for its secure address.',
+              Text(
+                context.l10n.serverRequirement,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: AppColors.textMuted),
               ),
@@ -149,9 +148,8 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
                 ),
                 child: Text(context.l10n.privacyPolicy),
               ),
-              const Text(
-                'Your HTTPS server URL is stored on this device only.\n'
-                'It is sent nowhere except your own server.',
+              Text(
+                context.l10n.serverUrlPrivacy,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12, color: AppColors.textMuted),
               ),

@@ -88,7 +88,7 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = 'Could not load your family.';
+        _error = context.l10n.loadFamilyFailed;
       });
     }
   }
@@ -142,7 +142,7 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _busy = false);
-      _snack('Could not rename the family.');
+      _snack(context.l10n.renameFamilyFailed);
     }
   }
 
@@ -169,22 +169,21 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _busy = false);
-      _snack('Could not change that role.');
+      _snack(context.l10n.changeRoleFailed);
     }
   }
 
   Future<void> _leave() async {
     if (_isLastAdmin) {
-      _snack('Promote another admin before you leave.');
+      _snack(context.l10n.promoteAdminBeforeLeaving);
       return;
     }
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text(context.l10n.leaveFamilyQuestion),
-        content: const Text(
-          'You will stop sharing location with this family. You can join '
-          'another family with an invite code, or create a new one.',
+        content: Text(
+          context.l10n.leaveFamilyBody,
         ),
         actions: [
           TextButton(
@@ -214,7 +213,7 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
     } catch (_) {
       if (!mounted) return;
       setState(() => _busy = false);
-      _snack('Could not leave the family.');
+      _snack(context.l10n.leaveFamilyFailed);
     }
   }
 

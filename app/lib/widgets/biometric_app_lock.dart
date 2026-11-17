@@ -242,7 +242,7 @@ class _BiometricAppLockState extends State<BiometricAppLock>
         _covered = hasSession;
         _checking = false;
         _error = hasSession
-            ? 'Could not read biometric settings. Retry or log out.'
+            ? context.l10n.biometricReadFailedRetry
             : null;
       });
       return;
@@ -343,7 +343,7 @@ class _BiometricAppLockState extends State<BiometricAppLock>
         _covered = true;
         _checking = false;
         _error = result.error?.message ??
-            'Biometric authentication was not completed. Please try again.';
+            context.l10n.biometricNotCompletedRetry;
       }
     });
   }
@@ -368,7 +368,7 @@ class _BiometricAppLockState extends State<BiometricAppLock>
         _loggingOut = false;
         _covered = true;
         _checking = false;
-        _error = 'Could not log out safely. Please try again.';
+        _error = context.l10n.logOutFailed;
       });
     }
   }
@@ -485,7 +485,7 @@ class _BiometricLockView extends StatelessWidget {
                           onPressed:
                               authenticating || loggingOut ? null : onLogout,
                           child: Text(
-                            loggingOut ? 'Logging out…' : 'Log out instead',
+                            loggingOut ? context.l10n.loggingOut : context.l10n.logOutInstead,
                           ),
                         ),
                       ],

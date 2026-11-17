@@ -47,29 +47,24 @@ String pushNotificationsSubtitle({
   // Device-preview override: present copy as the rehearsed platform even
   // though the rendering engine is the web.
   if (previewPlatform == 'android') {
-    return 'Android needs the ntfy app (UnifiedPush) so alerts arrive when '
-        'OpenFamily is closed. Off unregisters this device.';
+    return CurrentL10n.value.pushHelpAndroid;
   }
   if (previewPlatform == 'ios') {
-    return 'Delivered through your server via APNs. Off unregisters this '
-        'device.';
+    return CurrentL10n.value.pushHelpIos;
   }
   if (isWeb) {
-    return 'Push delivery is not available in the browser preview. This '
-        'preference is remembered for the installed apps.';
+    return CurrentL10n.value.pushHelpWeb;
   }
   switch (platform ?? defaultTargetPlatform) {
     case TargetPlatform.android:
-      return 'Android needs the ntfy app (UnifiedPush) so alerts arrive when '
-          'OpenFamily is closed. Off unregisters this device.';
+      return CurrentL10n.value.pushHelpAndroid;
     case TargetPlatform.iOS:
-      return 'Delivered through your server via APNs. Off unregisters this '
-          'device.';
+      return CurrentL10n.value.pushHelpIos;
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
     case TargetPlatform.macOS:
     case TargetPlatform.windows:
-      return 'Off unregisters this device from push notifications.';
+      return CurrentL10n.value.pushHelpDefault;
   }
 }
 
@@ -151,7 +146,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {
         _biometricLoading = false;
         _biometricError =
-            'Could not read biometric settings. Please reopen Settings.';
+            context.l10n.biometricReadFailedReopen;
       });
     }
   }
@@ -180,15 +175,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       final BiometricAuthenticationResult result =
           await _biometricService.authenticate(
         localizedReason: enabled
-            ? 'Confirm your identity to enable biometric unlock.'
-            : 'Confirm your identity to disable biometric unlock.',
+            ? context.l10n.biometricConfirmEnable
+            : context.l10n.biometricConfirmDisable,
         requireEnabled: !enabled,
       );
       if (!mounted) return;
       if (!result.authenticated) {
         _finishBiometricUpdateWithError(
           result.error?.message ??
-              'Biometric authentication was not completed.',
+              context.l10n.biometricNotCompleted,
         );
         return;
       }
@@ -198,7 +193,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!mounted) return;
     if (!saved) {
       _finishBiometricUpdateWithError(
-        'Could not save the biometric setting. Please try again.',
+        context.l10n.biometricSaveFailed,
       );
       return;
     }
@@ -211,7 +206,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          enabled ? 'Biometric unlock enabled.' : 'Biometric unlock disabled.',
+          enabled ? context.l10n.biometricEnabled : context.l10n.biometricDisabled,
         ),
       ),
     );
@@ -242,13 +237,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   String get _biometricSubtitle {
-    if (_biometricLoading) return 'Checking this device…';
-    if (_biometricUpdating) return 'Waiting for confirmation…';
+    if (_biometricLoading) return context.l10n.checkingDevice;
+    if (_biometricUpdating) return context.l10n.waitingConfirmation;
     if (_biometricError != null) return _biometricError!;
     final BiometricAvailability? availability = _biometricAvailability;
     if (availability == null || !availability.isAvailable) {
       return availability?.message ??
-          'Biometric authentication is unavailable.';
+          context.l10n.biometricUnavailable;
     }
 
     final List<BiometricType> enrolled = availability.enrolledBiometrics;
@@ -339,10 +334,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(context.l10n.deleteAccountQuestion),
-          content: const Text(
-            'This permanently deletes your account, devices, and location '
-            'history on this server. If you are the last admin of a family '
-            'that still has other people, promote someone else first.',
+          content: Text(
+            context.l10n.deleteAccountBody,
           ),
           actions: [
             TextButton(
@@ -372,7 +365,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             e.status == 409
                 ? e.message
                 : e.status == 404
-                    ? 'This server cannot delete accounts yet. Ask the operator to update it.'
+                    ? context.l10n.serverCannotDeleteAccounts
                     : e.message,
           ),
         ),
@@ -424,7 +417,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: Text(context.l10n.serverLabel),
             subtitle: Text(
               ServerConfig.instance.apiBaseUrl.isEmpty
-                  ? 'Not set'
+                  ? context.l10n.notSet
                   : ServerConfig.instance.apiBaseUrl,
             ),
             trailing:
@@ -437,7 +430,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const _UnitsTile(),
             const _LanguageTile(),
             const Divider(height: 1),
-            const _SectionHeader('Privacy & Security'),
+            _SectionHeader(context.l10n.privacySecurityHeader),
           SwitchListTile(
             secondary: const Icon(
               Icons.fingerprint,
@@ -466,10 +459,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: AppColors.purple,
               ),
               title: Text(context.l10n.lockDelay),
-              subtitle: const Text(
-                'How long the app can stay in the background before it '
-                'locks. Longer delays are convenient but let the recents '
-                'screen show your family map.',
+              subtitle: Text(
+                context.l10n.lockDelayHelp,
               ),
               trailing: DropdownButton<Duration>(
                 value: _lockGrace,
@@ -518,9 +509,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 color: AppColors.purple,
               ),
               title: Text(context.l10n.backgroundUpdates),
-              subtitle: const Text(
-                'Let OpenFamily run freely so your location stays fresh '
-                'when the app is closed.',
+              subtitle: Text(
+                context.l10n.backgroundUpdatesHelp,
               ),
               trailing:
                   const Icon(Icons.chevron_right, color: AppColors.textMuted),
@@ -619,10 +609,10 @@ class _AppearanceTile extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 preference == ThemePreference.system
-                    ? 'Following this device. Light is Ice, dark is Night.'
+                    ? context.l10n.themeHelpSystem
                     : preference == ThemePreference.light
-                        ? 'Ice. This device setting is ignored.'
-                        : 'Night. This device setting is ignored.',
+                        ? context.l10n.themeHelpLight
+                        : context.l10n.themeHelpDark,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),

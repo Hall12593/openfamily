@@ -195,7 +195,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
               '${DateTime.now().millisecondsSinceEpoch}',
       name: name,
       icon: widget.icon,
-      address: address.isEmpty ? 'Pinned location' : address,
+      address: address.isEmpty ? context.l10n.pinnedLocation : address,
       position: _position,
       radiusMeters: _radiusMeters,
       type: widget.initial?.type ?? widget.type,
@@ -209,7 +209,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.placeName.isEmpty ? 'Add a place' : 'Set ${widget.placeName} location',
+          widget.placeName.isEmpty ? context.l10n.addAPlaceTitle : 'Set ${widget.placeName} location',
         ),
         actions: [
           TextButton(
@@ -355,7 +355,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                     decoration: InputDecoration(
                       labelText: GeocodingService.isEnabled
                           ? 'Address'
-                          : 'Address (optional)',
+                          : context.l10n.addressOptional,
                       hintText: context.l10n.addressExample,
                       prefixIcon: const Icon(Icons.place_outlined),
                       border: const OutlineInputBorder(),
@@ -383,11 +383,8 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                   const SizedBox(height: 4),
                   Text(
                     GeocodingService.isEnabled
-                        ? 'Type an address to move the pin, or drag the map — '
-                            'the address fills in automatically.'
-                        : 'Drag the map to drop a pin, then save. Address '
-                            'search needs a geocoding add-on — you can still '
-                            'save the pin, and type a label here if you want.',
+                        ? context.l10n.pickerHintWithSearch
+                        : context.l10n.pickerHintNoSearch,
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.textMuted,

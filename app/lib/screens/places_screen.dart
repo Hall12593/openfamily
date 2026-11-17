@@ -267,11 +267,10 @@ class _PlacesScreenState extends State<PlacesScreen> {
       return ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(24),
             child: Text(
-              'No places yet. Add one to start getting arrival and '
-              'departure alerts.',
+              context.l10n.noPlacesYet,
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textMuted),
             ),

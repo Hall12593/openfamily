@@ -220,9 +220,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              const Text(
-                'Your email is used to sign you in. Your data stays on your '
-                'own server — not ours, not anyone\'s.',
+              Text(
+                context.l10n.signUpPrivacyNote,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 12, color: AppColors.textMuted),
               ),
