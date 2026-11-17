@@ -84,7 +84,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
 
   String _errorMessage(Object e) {
     if (e is ApiException) return e.message;
-    return 'Couldn\'t load places. Please try again.';
+    return context.l10n.loadPlacesFailed;
   }
 
   Future<void> _addPlace() async {
@@ -336,7 +336,7 @@ class _PlaceTile extends StatelessWidget {
         children: [
           if (onToggleAlerts != null)
             IconButton(
-              tooltip: place.alertsOn ? 'Alerts on' : 'Alerts off',
+              tooltip: place.alertsOn ? context.l10n.alertsOn : context.l10n.alertsOff,
               icon: Icon(
                 place.alertsOn
                     ? Icons.notifications_active

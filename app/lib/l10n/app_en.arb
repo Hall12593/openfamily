@@ -460,5 +460,172 @@
   "collapsePeopleHint": "Double tap to collapse the people drawer",
   "expandPeopleHint": "Double tap to expand the people drawer",
   "collapsePeople": "Collapse people",
-  "expandPeople": "Expand people"
+  "expandPeople": "Expand people",
+  "sectionAccount": "Account",
+  "sectionAppearance": "Appearance",
+  "sectionLocation": "Location",
+  "sectionAbout": "About",
+  "biometricMethodBoth": "face or fingerprint recognition",
+  "biometricMethodFace": "face recognition",
+  "biometricMethodFingerprint": "your fingerprint",
+  "biometricMethodGeneric": "your biometrics",
+  "biometricRequire": "Require {method} when opening or returning to the app.",
+  "@biometricRequire": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "biometricUse": "Use {method} to protect your private family map.",
+  "@biometricUse": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "findingLocation": "Finding your location…",
+  "whichNumberFor": "Which number for {name}?",
+  "@whichNumberFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "stopSosAlertsTo": "Stop sending SOS alerts to {name}?",
+  "@stopSosAlertsTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "noProfilePhotoInitials": "No profile photo. Initials {initials}.",
+  "@noProfilePhotoInitials": {
+    "placeholders": {
+      "initials": {
+        "type": "String"
+      }
+    }
+  },
+  "profilePhotoFor": "Profile photo for {name}.",
+  "@profilePhotoFor": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "semanticUploading": "{label} Uploading.",
+  "@semanticUploading": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "setPlaceLocationTitle": "Set {name} location",
+  "@setPlaceLocationTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "savedButAlertsFailed": "Saved \"{name}\" but couldn't enable alerts. {detail}",
+  "@savedButAlertsFailed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "alertsToggleLater": "You can toggle them later in Places.",
+  "couldNotSaveNamed": "Couldn't save \"{name}\". {detail}",
+  "@couldNotSaveNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "stepNumber": "Step {current}",
+  "@stepNumber": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      }
+    }
+  },
+  "stepNumberOfTotal": "Step {current} of {total}",
+  "@stepNumberOfTotal": {
+    "placeholders": {
+      "current": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "newNotification": "New notification",
+  "alertsChannelName": "Alerts",
+  "alertsChannelDescription": "Family check-ins, help, and SOS",
+  "biometricNotSupported": "Biometric authentication is not supported on this device.",
+  "biometricNotEnrolled": "Set up face or fingerprint recognition in device settings before enabling biometric unlock.",
+  "biometricReady": "Biometric authentication is ready to use.",
+  "biometricPrompt": "Use your biometric to unlock OpenFamily.",
+  "biometricUnavailableRetry": "Biometric authentication is unavailable right now. Please try again.",
+  "biometricUnavailableNow": "Biometric authentication is unavailable right now.",
+  "biometricCouldNotStart": "Biometric authentication could not be started.",
+  "biometricTurnedOff": "Biometric unlock is turned off in app settings.",
+  "biometricSettingsUnreadable": "Biometric settings could not be read. Please try again.",
+  "biometricTemporaryLock": "Biometric authentication is temporarily locked after too many attempts. Please try again later.",
+  "biometricLockedOut": "Biometrics are locked. Unlock your device with its passcode, then try again.",
+  "biometricNeedsPasscode": "Set up a device passcode before using biometric unlock.",
+  "shareSubject": "Join my OpenFamily family",
+  "shareMessage": "Join my OpenFamily family!\n\n1. Install the OpenFamily Android app\n2. Enter this server: {server}\n3. Use invite code {code}",
+  "@shareMessage": {
+    "placeholders": {
+      "server": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "loadPlacesFailed": "Couldn't load places. Please try again.",
+  "alertsOn": "Alerts on",
+  "alertsOff": "Alerts off",
+  "pleaseTryAgain": "Please try again.",
+  "placesSharedNote": "Places are shared with all family members, so everyone gets arrival and departure alerts.",
+  "enterEmailAndPassword": "Enter your email and password.",
+  "enterTwoFactorCode": "Enter your two-factor code.",
+  "somethingWentWrong": "Something went wrong. Please try again.",
+  "enterYourName": "Enter your name.",
+  "enterValidEmail": "Enter a valid email address.",
+  "passwordMin8Signup": "Password must be at least 8 characters.",
+  "emailAlreadyRegistered": "This email is already registered. Please log in.",
+  "inviteCodeInvalid": "That code isn't valid. Check it and try again.",
+  "joinFailed": "Could not join. Check your connection and try again.",
+  "enterValidPhone": "Enter a valid phone number",
+  "justNow": "just now",
+  "dontHaveAccount": "Don't have an account?",
+  "nooneInFamilyYet": "No one is in {name} yet",
+  "@nooneInFamilyYet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

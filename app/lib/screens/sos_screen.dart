@@ -677,12 +677,12 @@ class _Countdown extends StatelessWidget {
   const _Countdown({
     required this.seconds,
     required this.onCancel,
-    this.label = 'Sending SOS…',
+    this.label,
   });
 
   final int seconds;
   final VoidCallback onCancel;
-  final String label;
+  final String? label;
 
   @override
   Widget build(BuildContext context) {
@@ -699,7 +699,7 @@ class _Countdown extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          label,
+          label ?? context.l10n.sendingSos,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,

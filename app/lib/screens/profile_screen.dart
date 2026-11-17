@@ -660,12 +660,14 @@ class _AvatarEditor extends StatelessWidget {
   Widget build(BuildContext context) {
     final String initials = _initials(name);
     final String semanticLabel = avatarBytes == null
-        ? 'No profile photo. Initials $initials.'
-        : 'Profile photo for $name.';
+        ? context.l10n.noProfilePhotoInitials(initials)
+        : context.l10n.profilePhotoFor(name);
     return Center(
       child: Semantics(
         image: true,
-        label: saving ? '$semanticLabel Uploading.' : semanticLabel,
+        label: saving
+            ? context.l10n.semanticUploading(semanticLabel)
+            : semanticLabel,
         child: SizedBox(
           width: 120,
           height: 120,

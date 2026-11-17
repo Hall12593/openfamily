@@ -10,6 +10,8 @@ import 'location_refresh_service.dart';
 import 'secure_url.dart';
 import 'unifiedpush_bridge.dart';
 
+import '../l10n/l10n.dart';
+
 /// Registers this device for push (UnifiedPush/ntfy on Android, APNs on iOS)
 /// and shows a local notification when a message arrives while the app is open.
 class PushService {
@@ -103,11 +105,11 @@ class PushService {
         id: _localId++,
         title: title,
         body: body,
-        notificationDetails: const NotificationDetails(
+        notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             'alerts',
-            'Alerts',
-            channelDescription: 'Family check-ins, help, and SOS',
+            CurrentL10n.value.alertsChannelName,
+            channelDescription: CurrentL10n.value.alertsChannelDescription,
             importance: Importance.high,
             priority: Priority.high,
           ),
@@ -207,7 +209,7 @@ class PushService {
       final String detail = split > 0 ? text.substring(split + 1) : text;
       await showForeground(
         title,
-        detail.isEmpty ? 'New notification' : detail,
+        detail.isEmpty ? CurrentL10n.value.newNotification : detail,
       );
     }
   }

@@ -121,7 +121,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
                 child: Text(
-                  'Which number for ${picked.name}?',
+                  context.l10n.whichNumberFor(picked.name),
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -194,7 +194,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
       builder: (BuildContext context) => AlertDialog(
         title: Text(context.l10n.removeContactQuestion),
         content: Text(
-          'Stop sending SOS alerts to ${contact.name}?',
+          context.l10n.stopSosAlertsTo(contact.name),
         ),
         actions: [
           TextButton(
@@ -412,7 +412,7 @@ class _ManualContactDialogState extends State<_ManualContactDialog> {
       _nameError = name.isEmpty ? context.l10n.enterAName : null;
       _phoneError = EmergencyContact.looksLikePhone(phone)
           ? null
-          : 'Enter a valid phone number';
+          : context.l10n.enterValidPhone;
     });
     if (name.isEmpty || !EmergencyContact.looksLikePhone(phone)) return;
     Navigator.of(context).pop(_DraftContact(name: name, phone: phone));

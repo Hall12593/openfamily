@@ -64,7 +64,7 @@ class _FamiliesScreenState extends State<FamiliesScreen> {
           members.add(
             _FamilyMember(
               id: row['id'] as String? ?? '',
-              name: row['name'] as String? ?? 'Member',
+              name: row['name'] as String? ?? CurrentL10n.value.defaultMemberName,
               role: row['role'] as String? ?? 'member',
             ),
           );

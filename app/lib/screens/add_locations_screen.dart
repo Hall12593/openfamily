@@ -245,8 +245,10 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    'Saved "${place.name}" but couldn\'t enable alerts. '
-                    '${_errorMessage(e)}',
+                    context.l10n.savedButAlertsFailed(
+                      place.name,
+                      _errorMessage(e),
+                    ),
                   ),
                 ),
               );
@@ -255,8 +257,10 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Saved "${place.name}" but couldn\'t enable alerts. '
-                  'You can toggle them later in Places.',
+                  context.l10n.savedButAlertsFailed(
+                    place.name,
+                    context.l10n.alertsToggleLater,
+                  ),
                 ),
               ),
             );
@@ -267,7 +271,9 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Couldn\'t save "${place.name}". ${_errorMessage(e)}'),
+            content: Text(
+              context.l10n.couldNotSaveNamed(place.name, _errorMessage(e)),
+            ),
           ),
         );
       }
@@ -293,7 +299,7 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
 
   String _errorMessage(Object e) {
     if (e is ApiException) return e.message;
-    return 'Please try again.';
+    return context.l10n.pleaseTryAgain;
   }
 
   @override
@@ -319,9 +325,8 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Places are shared with all family members, so everyone '
-                    'gets arrival and departure alerts.',
+                  Text(
+                    context.l10n.placesSharedNote,
                     style: TextStyle(fontSize: 14, color: AppColors.textMuted),
                   ),
                   const SizedBox(height: 20),
@@ -441,7 +446,7 @@ class _PlaceCard extends StatelessWidget {
                 const SizedBox(width: 4),
                 // Bell toggle: arrive/leave notifications for this place.
                 IconButton(
-                  tooltip: p.alertsOn ? 'Alerts on' : 'Alerts off',
+                  tooltip: p.alertsOn ? context.l10n.alertsOn : context.l10n.alertsOff,
                   icon: Icon(
                     p.alertsOn
                         ? Icons.notifications_active
@@ -523,7 +528,7 @@ class _CustomPlaceCard extends StatelessWidget {
               const Icon(Icons.check_circle, color: AppColors.statusGreen),
               const SizedBox(width: 4),
               IconButton(
-                tooltip: place.alertsOn ? 'Alerts on' : 'Alerts off',
+                tooltip: place.alertsOn ? context.l10n.alertsOn : context.l10n.alertsOff,
                 icon: Icon(
                   place.alertsOn
                       ? Icons.notifications_active
