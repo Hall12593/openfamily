@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../services/api_client.dart';
 import '../services/auth_service.dart';
 import '../services/device_service.dart';
@@ -134,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create your account'),
+        title: Text(context.l10n.createYourAccount),
         bottom: const OnboardingStepIndicator(currentStep: 1, totalSteps: 6),
       ),
       body: SafeArea(
@@ -146,8 +147,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextField(
                 controller: _name,
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                  labelText: 'Your name',
+                decoration: InputDecoration(
+                  labelText: context.l10n.yourNameLabel,
                   hintText: 'Alex Rivera',
                   prefixIcon: Icon(Icons.person_outline),
                   border: OutlineInputBorder(),
@@ -157,8 +158,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               TextField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email address',
+                decoration: InputDecoration(
+                  labelText: context.l10n.emailAddressLabel,
                   prefixIcon: Icon(Icons.mail_outline),
                   border: OutlineInputBorder(),
                 ),
@@ -168,7 +169,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _password,
                 obscureText: _obscure,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: context.l10n.passwordLabel,
                   prefixIcon: const Icon(Icons.lock_outline),
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
@@ -184,9 +185,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: _inviteCode,
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.characters,
-                decoration: const InputDecoration(
-                  labelText: 'Invite code',
-                  hintText: 'e.g. AB12CD34',
+                decoration: InputDecoration(
+                  labelText: context.l10n.inviteCodeLabel,
+                  hintText: context.l10n.inviteCodeExample,
                   prefixIcon: Icon(Icons.key_outlined),
                   border: OutlineInputBorder(),
                 ),
@@ -215,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             color: Colors.white,
                           ),
                         )
-                      : const Text('Continue', style: TextStyle(fontSize: 16)),
+                      : Text(context.l10n.actionContinue, style: TextStyle(fontSize: 16)),
                 ),
               ),
               const SizedBox(height: 12),
@@ -229,8 +230,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Already have an account?',
+                  Text(
+                    context.l10n.alreadyHaveAccount,
                     style: TextStyle(fontSize: 13, color: AppColors.textMuted),
                   ),
                   TextButton(
@@ -239,7 +240,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         builder: (_) => const LoginScreen(),
                       ),
                     ),
-                    child: const Text('Log In'),
+                    child: Text(context.l10n.actionLogIn),
                   ),
                 ],
               ),

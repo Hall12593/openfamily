@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../models/place.dart';
 import '../services/api_client.dart';
 import '../services/family_service.dart';
@@ -29,17 +30,38 @@ class AddLocationsScreen extends StatefulWidget {
 
 /// A preset place the user can add to the map.
 class _PlacePreset {
-  const _PlacePreset({
-    required this.id,
-    required this.icon,
-    required this.name,
-    required this.subtitle,
-  });
+  const _PlacePreset({required this.id, required this.icon});
 
   final String id;
   final IconData icon;
-  final String name;
-  final String subtitle;
+
+  /// The preset's default place name, in the current language.
+  String name(AppLocalizations l10n) {
+    switch (id) {
+      case 'home':
+        return l10n.placeHomeName;
+      case 'work':
+        return l10n.placeWorkName;
+      case 'school':
+        return l10n.placeSchoolName;
+      default:
+        return l10n.placeGymName;
+    }
+  }
+
+  /// The one-line description shown until the place is set.
+  String subtitle(AppLocalizations l10n) {
+    switch (id) {
+      case 'home':
+        return l10n.placeHomeHint;
+      case 'work':
+        return l10n.placeWorkHint;
+      case 'school':
+        return l10n.placeSchoolHint;
+      default:
+        return l10n.placeGymHint;
+    }
+  }
 }
 
 /// Maps a preset id to the backend place type.
@@ -60,30 +82,10 @@ String _typeForPresetId(String id) {
 
 class _AddLocationsScreenState extends State<AddLocationsScreen> {
   static const List<_PlacePreset> _presets = [
-    _PlacePreset(
-      id: 'home',
-      icon: Icons.home,
-      name: 'Home',
-      subtitle: 'Where you live',
-    ),
-    _PlacePreset(
-      id: 'work',
-      icon: Icons.business_center,
-      name: 'Work',
-      subtitle: 'Where you work',
-    ),
-    _PlacePreset(
-      id: 'school',
-      icon: Icons.school,
-      name: 'School',
-      subtitle: 'Where the kids go to school',
-    ),
-    _PlacePreset(
-      id: 'gym',
-      icon: Icons.fitness_center,
-      name: 'Gym',
-      subtitle: 'Where you work out',
-    ),
+    _PlacePreset(id: 'home', icon: Icons.home),
+    _PlacePreset(id: 'work', icon: Icons.business_center),
+    _PlacePreset(id: 'school', icon: Icons.school),
+    _PlacePreset(id: 'gym', icon: Icons.fitness_center),
   ];
 
   /// Preset id → the real [Place] the user captured.
@@ -103,7 +105,7 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
     final Place? place = await Navigator.of(context).push<Place>(
       MaterialPageRoute<Place>(
         builder: (_) => PlacePickerScreen(
-          placeName: preset.name,
+          placeName: preset.name(context.l10n),
           icon: preset.icon,
           type: _typeForPresetId(preset.id),
           initial: _places[preset.id],
@@ -151,24 +153,24 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
     return showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Name your place'),
+        title: Text(context.l10n.namePlaceTitle),
         content: TextField(
           autofocus: true,
           textCapitalization: TextCapitalization.words,
           onChanged: (String value) => name = value,
-          decoration: const InputDecoration(
-            labelText: 'Place name',
-            hintText: 'e.g. Grandma\'s house',
+          decoration: InputDecoration(
+            labelText: context.l10n.placeNameLabel,
+            hintText: context.l10n.placeNameExampleGrandma,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.actionCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(name),
-            child: const Text('Next'),
+            child: Text(context.l10n.actionNext),
           ),
         ],
       ),
@@ -274,9 +276,8 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
     if (failed) {
       _finishing = false;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Some places couldn\'t be saved. Check your connection and try again.',
+        SnackBar(
+          content: Text(context.l10n.placesSaveFailed,
           ),
         ),
       );
@@ -299,7 +300,7 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add locations'),
+        title: Text(context.l10n.addLocationsTitle),
         automaticallyImplyLeading: false,
         bottom: widget.step == null
             ? null
@@ -313,8 +314,8 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
               child: ListView(
                 padding: const EdgeInsets.all(24),
                 children: [
-                  const Text(
-                    'Add places to your map',
+                  Text(
+                    context.l10n.addPlacesHeading,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
                   const SizedBox(height: 8),
@@ -352,15 +353,15 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
                 children: [
                   FilledButton(
                     onPressed: _finish,
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 14),
-                      child: Text('Continue', style: TextStyle(fontSize: 16)),
+                      child: Text(context.l10n.actionContinue, style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   const SizedBox(height: 8),
                   TextButton(
                     onPressed: _finish,
-                    child: const Text('Skip for now'),
+                    child: Text(context.l10n.actionSkipForNow),
                   ),
                 ],
               ),
@@ -416,7 +417,7 @@ class _PlaceCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      preset.name,
+                      preset.name(context.l10n),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -425,7 +426,7 @@ class _PlaceCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       p == null
-                          ? preset.subtitle
+                          ? preset.subtitle(context.l10n)
                           : '${p.address} · ${p.radiusLabel}',
                       style: const TextStyle(
                         fontSize: 13,
@@ -452,7 +453,7 @@ class _PlaceCard extends StatelessWidget {
               ] else
                 OutlinedButton(
                   onPressed: onAdd,
-                  child: const Text('Add'),
+                  child: Text(context.l10n.actionAdd),
                 ),
             ],
           ),
@@ -559,7 +560,7 @@ class _AddCustomPlaceCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.purple.withValues(alpha: 0.4)),
           ),
-          child: const Row(
+          child: Row(
             children: [
               Icon(Icons.add_location_alt_outlined,
                   color: AppColors.purple, size: 24),
@@ -569,7 +570,7 @@ class _AddCustomPlaceCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Add a custom place',
+                      context.l10n.addCustomPlace,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -578,7 +579,7 @@ class _AddCustomPlaceCard extends StatelessWidget {
                     ),
                     SizedBox(height: 2),
                     Text(
-                      'Any other place — e.g. Grandma\'s house',
+                      context.l10n.customPlaceHint,
                       style: TextStyle(
                         fontSize: 13,
                         color: AppColors.textMuted,

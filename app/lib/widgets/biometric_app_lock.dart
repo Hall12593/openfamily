@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../services/biometric_service.dart';
 import '../services/token_storage.dart';
 import '../theme/app_theme.dart';
@@ -437,7 +438,7 @@ class _BiometricLockView extends StatelessWidget {
                         const Center(child: OpenFamilyMark(size: 88)),
                         const SizedBox(height: 24),
                         Text(
-                          'OpenFamily is locked',
+                          context.l10n.appLockedTitle,
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
@@ -445,8 +446,8 @@ class _BiometricLockView extends StatelessWidget {
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Authenticate to view your private family map.',
+                        Text(
+                          context.l10n.appLockedBody,
                           textAlign: TextAlign.center,
                           style: TextStyle(color: AppColors.textMuted),
                         ),

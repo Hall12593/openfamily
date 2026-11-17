@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../l10n/l10n.dart';
 import '../models/user_profile.dart';
 import '../services/api_client.dart';
 import '../theme/app_theme.dart';
@@ -92,7 +93,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _confirmPasswordController.clear();
       setState(() => _passwordSaving = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password updated. Other devices will need to sign in again.')),
+        SnackBar(content: Text(context.l10n.passwordUpdated)),
       );
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -341,21 +342,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Remove profile photo?'),
-        content: const Text(
-          'Your photo will be removed from this device view and your server.',
+        title: Text(context.l10n.removePhotoQuestion),
+        content: Text(context.l10n.removePhotoBody,
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.actionCancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.sosRed,
             ),
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Remove'),
+            child: Text(context.l10n.actionRemove),
           ),
         ],
       ),
@@ -444,7 +444,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final UserProfile? profile = _profile;
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: Text(context.l10n.profileTitle)),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : profile == null
@@ -466,8 +466,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         enabled: !_nameSaving && !_avatarSaving,
                         textCapitalization: TextCapitalization.words,
                         onChanged: _onNameChanged,
-                        decoration: const InputDecoration(
-                          labelText: 'Name',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.nameLabel,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -477,8 +477,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         enabled: !_nameSaving && !_avatarSaving,
                         keyboardType: TextInputType.phone,
                         onChanged: _onNameChanged,
-                        decoration: const InputDecoration(
-                          labelText: 'Phone (SMS alerts)',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.phoneSmsLabel,
                           hintText: '+15551234567',
                           border: OutlineInputBorder(),
                         ),
@@ -503,20 +503,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text('Save changes'),
+                            : Text(context.l10n.saveChanges),
                       ),
                       const SizedBox(height: 16),
                       InputDecorator(
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.emailLabel,
                           border: OutlineInputBorder(),
                         ),
                         child: Text(profile.email),
                       ),
                       const SizedBox(height: 16),
                       InputDecorator(
-                        decoration: const InputDecoration(
-                          labelText: 'Family role',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.familyRole,
                           border: OutlineInputBorder(),
                         ),
                         child: Text(_roleLabel(profile.role)),
@@ -542,7 +542,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ? null
                                   : _removeAvatar,
                               icon: const Icon(Icons.delete_outline),
-                              label: const Text('Remove photo'),
+                              label: Text(context.l10n.removePhoto),
                               style: TextButton.styleFrom(
                                 foregroundColor: AppColors.sosRed,
                               ),
@@ -559,8 +559,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 28),
                       const Divider(),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Change password',
+                      Text(
+                        context.l10n.changePassword,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -570,8 +570,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       TextField(
                         controller: _currentPasswordController,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Current password',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.currentPassword,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -579,8 +579,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       TextField(
                         controller: _newPasswordController,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'New password',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.newPassword,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -588,8 +588,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       TextField(
                         controller: _confirmPasswordController,
                         obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Confirm new password',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.confirmNewPassword,
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -609,13 +609,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 20,
                                 child: CircularProgressIndicator(strokeWidth: 2),
                               )
-                            : const Text('Update password'),
+                            : Text(context.l10n.updatePassword),
                       ),
                       const SizedBox(height: 28),
                       const Divider(),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Profile photo privacy',
+                      Text(
+                        context.l10n.profilePhotoPrivacy,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -768,7 +768,7 @@ class _AvatarError extends StatelessWidget {
               style: const TextStyle(color: AppColors.sosRed),
             ),
           ),
-          TextButton(onPressed: onRetry, child: const Text('Retry')),
+          TextButton(onPressed: onRetry, child: Text(context.l10n.actionRetry)),
         ],
       ),
     );
@@ -797,7 +797,7 @@ class _ProfileLoadError extends StatelessWidget {
               style: const TextStyle(color: AppColors.sosRed),
             ),
             const SizedBox(height: 12),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(onPressed: onRetry, child: Text(context.l10n.actionRetry)),
           ],
         ),
       ),

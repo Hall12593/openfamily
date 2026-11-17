@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../models/place.dart';
 import '../services/api_client.dart';
 import '../services/family_service.dart';
@@ -157,16 +158,16 @@ class _PlacesScreenState extends State<PlacesScreen> {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Delete place?'),
+        title: Text(context.l10n.deletePlaceQuestion),
         content: Text('Remove "${place.name}" from your family\'s places?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.actionCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete'),
+            child: Text(context.l10n.actionDelete),
           ),
         ],
       ),
@@ -240,7 +241,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Places')),
+      appBar: AppBar(title: Text(context.l10n.placesTitle)),
       body: _buildBody(),
     );
   }
@@ -253,7 +254,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
           children: [
             Text(_error!, textAlign: TextAlign.center),
             const SizedBox(height: 12),
-            FilledButton(onPressed: _load, child: const Text('Retry')),
+            FilledButton(onPressed: _load, child: Text(context.l10n.actionRetry)),
           ],
         ),
       );
@@ -347,13 +348,13 @@ class _PlaceTile extends StatelessWidget {
             ),
           if (onEdit != null)
             IconButton(
-              tooltip: 'Edit place',
+              tooltip: context.l10n.editPlace,
               icon: const Icon(Icons.edit_outlined, color: AppColors.textMuted),
               onPressed: onEdit,
             ),
           if (onDelete != null)
             IconButton(
-              tooltip: 'Delete place',
+              tooltip: context.l10n.deletePlace,
               icon: const Icon(Icons.delete_outline, color: AppColors.textMuted),
               onPressed: onDelete,
             ),
@@ -372,8 +373,8 @@ class _AddPlaceTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: const Icon(Icons.add_circle_outline, color: AppColors.purple),
-      title: const Text(
-        'Add a Place',
+      title: Text(
+        context.l10n.addAPlace,
         style: TextStyle(color: AppColors.purple, fontWeight: FontWeight.w600),
       ),
       onTap: onTap,

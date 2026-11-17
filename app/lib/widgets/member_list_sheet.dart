@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../models/member.dart';
 import '../theme/app_theme.dart';
 import 'member_avatar_bubble.dart';
@@ -173,8 +174,8 @@ class _PeopleHeader extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'People',
+                                    Text(
+                                      context.l10n.peopleTitle,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
@@ -316,7 +317,7 @@ class _EmptyMemberList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
       child: Text(
-        'Invite someone to see them on your map.',
+        context.l10n.inviteToSeeOnMap,
         style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );

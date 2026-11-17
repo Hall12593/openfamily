@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../services/api_client.dart';
 import '../services/secure_url.dart';
 import '../services/server_config.dart';
@@ -86,7 +87,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.allowCancel ? AppBar(title: const Text('Server')) : null,
+      appBar: widget.allowCancel ? AppBar(title: Text(context.l10n.serverLabel)) : null,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -115,7 +116,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
               TextField(
                 controller: _controller,
                 decoration: InputDecoration(
-                  labelText: 'Server URL',
+                  labelText: context.l10n.serverUrlLabel,
                   hintText: 'https://openfamily.example.com',
                   prefixIcon: const Icon(Icons.dns_outlined),
                   errorText: _error,
@@ -137,7 +138,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Connect', style: TextStyle(fontSize: 16)),
+                      : Text(context.l10n.actionConnect, style: TextStyle(fontSize: 16)),
                 ),
               ),
               const Spacer(),
@@ -146,7 +147,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
                   MaterialPageRoute<void>(
                       builder: (_) => const PrivacyPolicyScreen()),
                 ),
-                child: const Text('Privacy policy'),
+                child: Text(context.l10n.privacyPolicy),
               ),
               const Text(
                 'Your HTTPS server URL is stored on this device only.\n'
