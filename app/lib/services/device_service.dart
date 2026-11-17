@@ -13,7 +13,7 @@ class DeviceService {
   /// `--dart-define=OPENFAMILY_APP_VERSION=...`.
   static const String _appVersion = String.fromEnvironment(
     'OPENFAMILY_APP_VERSION',
-    defaultValue: '0.1.1',
+    defaultValue: '0.1.2',
   );
 
   /// Single-flight guard: if two callers invoke [ensureRegistered] concurrently
