@@ -18,7 +18,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
   bool _sent = false;
   bool _sending = false;
   String? _error;
-  String _locationLabel = 'Finding your location…';
+  String? _locationLabel;
   double? _lat;
   double? _lon;
 
@@ -134,7 +134,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      _locationLabel,
+                      _locationLabel ?? context.l10n.findingLocation,
                       style: const TextStyle(
                         fontSize: 13,
                         color: AppColors.textMuted,

@@ -180,7 +180,7 @@ class _EmptyPeople extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'No one is in $circleName yet',
+              context.l10n.nooneInFamilyYet(circleName),
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
             ),

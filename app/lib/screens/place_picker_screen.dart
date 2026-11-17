@@ -209,7 +209,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.placeName.isEmpty ? context.l10n.addAPlaceTitle : 'Set ${widget.placeName} location',
+          widget.placeName.isEmpty ? context.l10n.addAPlaceTitle : context.l10n.setPlaceLocationTitle(widget.placeName),
         ),
         actions: [
           TextButton(

@@ -50,7 +50,7 @@ class _JoinCircleScreenState extends State<JoinCircleScreen> {
   Future<void> _join() async {
     final String code = _code.text.trim();
     if (code.isEmpty) {
-      setState(() => _error = 'Enter your invite code');
+      setState(() => _error = context.l10n.enterInviteCodeTitle);
       return;
     }
     setState(() {
@@ -65,7 +65,7 @@ class _JoinCircleScreenState extends State<JoinCircleScreen> {
         if (ok) {
           _joined = true;
         } else {
-          _error = 'That code isn\'t valid. Check it and try again.';
+          _error = context.l10n.inviteCodeInvalid;
         }
       });
     } on SessionExpiredException {
@@ -74,7 +74,7 @@ class _JoinCircleScreenState extends State<JoinCircleScreen> {
       if (!mounted) return;
       setState(() {
         _submitting = false;
-        _error = 'Could not join. Check your connection and try again.';
+        _error = context.l10n.joinFailed;
       });
     }
   }

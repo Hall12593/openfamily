@@ -48,15 +48,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final String inviteCode = _inviteCode.text.trim();
 
     if (name.isEmpty) {
-      setState(() => _error = 'Enter your name.');
+      setState(() => _error = context.l10n.enterYourName);
       return;
     }
     if (!_emailPattern.hasMatch(email)) {
-      setState(() => _error = 'Enter a valid email address.');
+      setState(() => _error = context.l10n.enterValidEmail);
       return;
     }
     if (password.length < 8) {
-      setState(() => _error = 'Password must be at least 8 characters.');
+      setState(() => _error = context.l10n.passwordMin8Signup);
       return;
     }
 
@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (!mounted) return;
       if (e.status == 409) {
         // Email already registered — offer to log in instead.
-        _redirectToLogin('This email is already registered. Please log in.');
+        _redirectToLogin(context.l10n.emailAlreadyRegistered);
         return;
       }
       setState(() {
@@ -93,7 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       if (!mounted) return;
       setState(() {
         _submitting = false;
-        _error = 'Something went wrong. Please try again.';
+        _error = context.l10n.somethingWentWrong;
       });
       return;
     }

@@ -250,15 +250,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final bool hasFace = enrolled.contains(BiometricType.face);
     final bool hasFingerprint = enrolled.contains(BiometricType.fingerprint);
     final String method = hasFace && hasFingerprint
-        ? 'face or fingerprint recognition'
+        ? context.l10n.biometricMethodBoth
         : hasFace
-            ? 'face recognition'
+            ? context.l10n.biometricMethodFace
             : hasFingerprint
-                ? 'your fingerprint'
-                : 'your biometrics';
+                ? context.l10n.biometricMethodFingerprint
+                : context.l10n.biometricMethodGeneric;
     return _biometricEnabled
-        ? 'Require $method when opening or returning to the app.'
-        : 'Use $method to protect your private family map.';
+        ? context.l10n.biometricRequire(method)
+        : context.l10n.biometricUse(method);
   }
 
   Future<void> _logout() async {
@@ -393,7 +393,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: DotGridBackground(
         child: ListView(
           children: [
-            const _SectionHeader('Account'),
+            _SectionHeader(context.l10n.sectionAccount),
           ListTile(
             leading: const Icon(Icons.person_outline, color: AppColors.purple),
             title: Text(context.l10n.profileTitle),
@@ -425,7 +425,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onTap: _changeServer,
           ),
             const Divider(height: 1),
-            const _SectionHeader('Appearance'),
+            _SectionHeader(context.l10n.sectionAppearance),
             const _AppearanceTile(),
             const _UnitsTile(),
             const _LanguageTile(),
@@ -492,7 +492,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
           const Divider(height: 1),
-          const _SectionHeader('Location'),
+          _SectionHeader(context.l10n.sectionLocation),
           SwitchListTile(
             secondary:
                 const Icon(Icons.location_on_outlined, color: AppColors.purple),
@@ -517,7 +517,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onTap: BatteryOptimizationService.openSettings,
             ),
           const Divider(height: 1),
-          const _SectionHeader('Notifications'),
+          _SectionHeader(context.l10n.notificationsTitle),
           SwitchListTile(
             secondary: const Icon(Icons.notifications_outlined,
                 color: AppColors.purple),
@@ -527,7 +527,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: _notificationsLoading ? null : _setPushNotifications,
           ),
           const Divider(height: 1),
-          const _SectionHeader('About'),
+          _SectionHeader(context.l10n.sectionAbout),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.purple),
             title: Text(context.l10n.privacyPolicy),

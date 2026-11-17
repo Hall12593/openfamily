@@ -39,11 +39,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _submit() async {
     if (_identifier.text.trim().isEmpty || _password.text.isEmpty) {
-      setState(() => _error = 'Enter your email and password.');
+      setState(() => _error = context.l10n.enterEmailAndPassword);
       return;
     }
     if (_totpRequired && _totpCode.text.trim().isEmpty) {
-      setState(() => _error = 'Enter your two-factor code.');
+      setState(() => _error = context.l10n.enterTwoFactorCode);
       return;
     }
     setState(() {
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       setState(() {
         _submitting = false;
-        _error = 'Something went wrong. Please try again.';
+        _error = context.l10n.somethingWentWrong;
       });
       return;
     }
@@ -210,8 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Don't have an account?",
+                      Text(
+                        context.l10n.dontHaveAccount,
                         style: TextStyle(
                           fontSize: 13,
                           color: AppColors.textMuted,

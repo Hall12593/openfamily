@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openfamily/l10n/l10n.dart';
+import 'package:openfamily/screens/welcome_screen.dart';
 import 'package:openfamily/services/member_mapper.dart';
 
 Map<String, dynamic> _arb(String name) =>
@@ -57,5 +59,26 @@ void main() {
     expect(CurrentL10n.value.addressStationary, 'Detenido');
     CurrentL10n.update(lookupAppLocalizations(const Locale('en')));
     expect(CurrentL10n.value.addressStationary, 'Stationary');
+  });
+
+  testWidgets('a screen renders in Spanish when the locale is es',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        locale: Locale('es'),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: WelcomeScreen(),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Comenzar'), findsOneWidget);
+    expect(find.text('Get Started'), findsNothing);
   });
 }

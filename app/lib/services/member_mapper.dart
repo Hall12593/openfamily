@@ -363,7 +363,7 @@ int? _parseAvatarVersion(dynamic value) {
 
 /// Compact "Xm ago" / "Xh ago" / "Xd ago" label for a stale location.
 String _formatAgo(Duration d) {
-  if (d.inMinutes < 1) return 'just now';
+  if (d.inMinutes < 1) return CurrentL10n.value.justNow;
   if (d.inMinutes < 60) return '${d.inMinutes}m';
   if (d.inHours < 24) return '${d.inHours}h';
   return '${d.inDays}d';
