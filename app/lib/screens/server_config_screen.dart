@@ -109,7 +109,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
               Text(
                 context.l10n.serverRequirement,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: AppColors.textMuted),
+                style: TextStyle(fontSize: 16, color: BrandTheme.of(context).muted),
               ),
               const SizedBox(height: 32),
               TextField(
@@ -151,7 +151,7 @@ class _ServerConfigScreenState extends State<ServerConfigScreen> {
               Text(
                 context.l10n.serverUrlPrivacy,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+                style: TextStyle(fontSize: 12, color: BrandTheme.of(context).muted),
               ),
             ],
           ),

@@ -422,7 +422,7 @@ class _BiometricLockView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surface,
+      color: BrandTheme.of(context).sheet,
       child: SafeArea(
         child: Center(
           child: ConstrainedBox(
@@ -449,7 +449,7 @@ class _BiometricLockView extends StatelessWidget {
                         Text(
                           context.l10n.appLockedBody,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: AppColors.textMuted),
+                          style: TextStyle(color: BrandTheme.of(context).muted),
                         ),
                         if (error != null) ...[
                           const SizedBox(height: 20),
@@ -472,7 +472,7 @@ class _BiometricLockView extends StatelessWidget {
                                   height: 18,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: Colors.white,
+                                    color: AppColors.onAccent,
                                   ),
                                 )
                               : const Icon(Icons.fingerprint),

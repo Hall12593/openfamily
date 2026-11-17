@@ -500,7 +500,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  color: Colors.white,
+                                  color: AppColors.onAccent,
                                 ),
                               )
                             : Text(context.l10n.saveChanges),
@@ -625,7 +625,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(
                         context.l10n.photoPrivacyBody,
                         style: TextStyle(
-                          color: AppColors.textMuted,
+                          color: BrandTheme.of(context).muted,
                           height: 1.35,
                         ),
                       ),
@@ -679,7 +679,7 @@ class _AvatarEditor extends StatelessWidget {
                 height: 112,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.surfaceTint,
+                  color: BrandTheme.of(context).paper,
                   border: Border.all(color: AppColors.purple, width: 3),
                 ),
                 child: ClipOval(
@@ -687,8 +687,8 @@ class _AvatarEditor extends StatelessWidget {
                       ? Center(
                           child: Text(
                             initials,
-                            style: const TextStyle(
-                              color: AppColors.purple,
+                            style: TextStyle(
+                              color: BrandTheme.of(context).accentInk,
                               fontSize: 38,
                               fontWeight: FontWeight.w800,
                             ),
@@ -700,8 +700,8 @@ class _AvatarEditor extends StatelessWidget {
                           errorBuilder: (_, __, ___) => Center(
                             child: Text(
                               initials,
-                              style: const TextStyle(
-                                color: AppColors.purple,
+                              style: TextStyle(
+                                color: BrandTheme.of(context).accentInk,
                                 fontSize: 38,
                                 fontWeight: FontWeight.w800,
                               ),

@@ -76,7 +76,7 @@ class MemberProfileScreen extends StatelessWidget {
                 : context.l10n.offlineStatus,
           ),
           _DetailRow(
-            icon: const Icon(Icons.schedule, size: 22, color: AppColors.purple),
+            icon: Icon(Icons.schedule, size: 22, color: BrandTheme.of(context).accentInk),
             label: context.l10n.etaLabel,
             value: member.eta ?? '—',
           ),
@@ -101,10 +101,10 @@ class MemberProfileScreen extends StatelessWidget {
             value: _accuracyLabel,
           ),
           _DetailRow(
-            icon: const Icon(
+            icon: Icon(
               Icons.place_outlined,
               size: 22,
-              color: AppColors.purple,
+              color: BrandTheme.of(context).accentInk,
             ),
             label: context.l10n.addressLabel,
             value: member.address,

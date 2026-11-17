@@ -34,7 +34,7 @@ class Place {
   final LatLng position;
   final double radiusMeters;
 
-  /// Backend place type: "home", "work", "school", "gym", or "custom".
+  /// Backend place type, one of [types].
   final String type;
   final bool alertsOn;
 
@@ -45,9 +45,40 @@ class Place {
   /// Sentinel passed to [copyWith] to explicitly clear [geofenceId].
   static const Object clearGeofence = Object();
 
+  /// Every place type the backend accepts, in the order the icon picker
+  /// shows them.
+  static const List<String> types = <String>[
+    'home',
+    'work',
+    'school',
+    'gym',
+    'family',
+    'friend',
+    'store',
+    'health',
+    'park',
+    'food',
+    'worship',
+    'custom',
+  ];
+
   /// Maps a backend place [type] to its Material icon.
   static IconData iconForType(String type) {
     switch (type) {
+      case 'family':
+        return Icons.family_restroom;
+      case 'friend':
+        return Icons.people_outline;
+      case 'store':
+        return Icons.storefront_outlined;
+      case 'health':
+        return Icons.local_hospital_outlined;
+      case 'park':
+        return Icons.park_outlined;
+      case 'food':
+        return Icons.restaurant_outlined;
+      case 'worship':
+        return Icons.church_outlined;
       case 'home':
         return Icons.home;
       case 'work':

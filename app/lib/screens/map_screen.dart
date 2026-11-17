@@ -531,6 +531,99 @@ class _MapScreenState extends State<MapScreen>
         .push(MaterialPageRoute<void>(builder: (_) => const SosScreen()));
   }
 
+  /// Details for a tapped place, with a shortcut to edit it.
+  Future<void> _openPlace(Place place) async {
+    final bool? edit = await showModalBottomSheet<bool>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext sheetContext) {
+        final BrandTheme brand = BrandTheme.of(sheetContext);
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.accent,
+                      ),
+                      child: Icon(
+                        place.icon,
+                        color: AppColors.onAccent,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Text(
+                        place.name,
+                        style: Theme.of(sheetContext).textTheme.titleLarge,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                if (place.address.isNotEmpty)
+                  Text(
+                    place.address,
+                    style: TextStyle(color: brand.muted),
+                  ),
+                const SizedBox(height: 4),
+                Text(
+                  sheetContext.l10n.placeRadiusLabel(place.radiusLabel),
+                  style: TextStyle(color: brand.muted),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(sheetContext).pop(false),
+                        child: Text(sheetContext.l10n.closeAction),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: FilledButton.icon(
+                        onPressed: () => Navigator.of(sheetContext).pop(true),
+                        icon: const Icon(Icons.edit_outlined),
+                        label: Text(sheetContext.l10n.placeEditAction),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (edit != true || !mounted) return;
+    try {
+      final Place? saved = await editPlace(context, place);
+      if (saved == null) return;
+      final List<Member> members = await _familyService.refreshPlaces();
+      if (!mounted) return;
+      setState(() {
+        _places = _familyService.places;
+        _members = members;
+        _membersListenable.value = members;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_friendlyError(e))),
+      );
+    }
+  }
+
   Future<void> _openPlaces() async {
     await Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (_) => const PlacesScreen()));
@@ -697,7 +790,10 @@ class _MapScreenState extends State<MapScreen>
                       point: p.position,
                       width: PlaceMarker.width,
                       height: PlaceMarker.height,
-                      child: PlaceMarker(place: p),
+                      child: PlaceMarker(
+                        place: p,
+                        onTap: () => _openPlace(p),
+                      ),
                     ),
                 ],
               ),

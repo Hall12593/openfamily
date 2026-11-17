@@ -93,7 +93,7 @@ class _CreateCircleScreenState extends State<CreateCircleScreen> {
               const SizedBox(height: 8),
               Text(
                 context.l10n.createFamilyHint,
-                style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+                style: TextStyle(fontSize: 14, color: BrandTheme.of(context).muted),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -125,7 +125,7 @@ class _CreateCircleScreenState extends State<CreateCircleScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white,
+                            color: AppColors.onAccent,
                           ),
                         )
                       : Text(

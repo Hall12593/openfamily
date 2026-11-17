@@ -250,7 +250,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
           child: Text(
             context.l10n.smsNotConfigured,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 15, color: AppColors.textMuted),
+            style: TextStyle(fontSize: 15, color: BrandTheme.of(context).muted),
           ),
         ),
       );
@@ -282,7 +282,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
           padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
           child: Text(
             context.l10n.emergencyContactsExplainer,
-            style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+            style: TextStyle(fontSize: 13, color: BrandTheme.of(context).muted),
           ),
         ),
         if (contacts.isEmpty)
@@ -290,7 +290,7 @@ class _SafetyScreenState extends State<SafetyScreen> {
             padding: EdgeInsets.fromLTRB(20, 8, 20, 16),
             child: Text(
               context.l10n.noEmergencyContacts,
-              style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+              style: TextStyle(fontSize: 13, color: BrandTheme.of(context).muted),
             ),
           ),
         for (final EmergencyContact c in contacts)
@@ -304,10 +304,10 @@ class _SafetyScreenState extends State<SafetyScreen> {
         ),
         ListTile(
           leading:
-              const Icon(Icons.keyboard_outlined, color: AppColors.textMuted),
+              Icon(Icons.keyboard_outlined, color: BrandTheme.of(context).muted),
           title: Text(
             context.l10n.typeNameAndNumber,
-            style: TextStyle(color: AppColors.textMuted),
+            style: TextStyle(color: BrandTheme.of(context).muted),
           ),
           enabled: !_saving && contacts.length < 10,
           onTap: _addManually,
@@ -336,7 +336,7 @@ class _ContactTile extends StatelessWidget {
           shape: BoxShape.circle,
           color: AppColors.purple.withValues(alpha: 0.12),
         ),
-        child: const Icon(Icons.person, color: AppColors.purple, size: 22),
+        child: Icon(Icons.person, color: BrandTheme.of(context).accentInk, size: 22),
       ),
       title: Text(
         contact.name,
@@ -345,7 +345,7 @@ class _ContactTile extends StatelessWidget {
       subtitle: Text(subtitle),
       trailing: IconButton(
         tooltip: context.l10n.actionRemove,
-        icon: const Icon(Icons.delete_outline, color: AppColors.textMuted),
+        icon: Icon(Icons.delete_outline, color: BrandTheme.of(context).muted),
         onPressed: onRemove,
       ),
     );
@@ -363,12 +363,12 @@ class _AddContactTile extends StatelessWidget {
     return ListTile(
       leading: Icon(
         Icons.contacts_outlined,
-        color: enabled ? AppColors.purple : AppColors.textMuted,
+        color: enabled ? BrandTheme.of(context).accentInk : BrandTheme.of(context).muted,
       ),
       title: Text(
         context.l10n.chooseFromContacts,
         style: TextStyle(
-          color: enabled ? AppColors.purple : AppColors.textMuted,
+          color: enabled ? BrandTheme.of(context).accentInk : BrandTheme.of(context).muted,
           fontWeight: FontWeight.w600,
         ),
       ),

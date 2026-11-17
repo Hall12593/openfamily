@@ -213,7 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white,
+                            color: AppColors.onAccent,
                           ),
                         )
                       : Text(context.l10n.actionContinue, style: TextStyle(fontSize: 16)),
@@ -223,7 +223,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text(
                 context.l10n.signUpPrivacyNote,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+                style: TextStyle(fontSize: 12, color: BrandTheme.of(context).muted),
               ),
               const SizedBox(height: 4),
               Row(
@@ -231,7 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   Text(
                     context.l10n.alreadyHaveAccount,
-                    style: TextStyle(fontSize: 13, color: AppColors.textMuted),
+                    style: TextStyle(fontSize: 13, color: BrandTheme.of(context).muted),
                   ),
                   TextButton(
                     onPressed: () => Navigator.of(context).push(

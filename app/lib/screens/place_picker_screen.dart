@@ -55,6 +55,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
   late final TextEditingController _name;
   late final TextEditingController _address;
   late double _radiusMeters;
+  late String _type;
 
   /// Neutral fallback (0,0) shown at world zoom when the user's location can't
   /// be obtained — never a hardcoded city.
@@ -91,6 +92,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
     _name = TextEditingController(text: widget.placeName);
     _address = TextEditingController(text: widget.initial?.address ?? '');
     _radiusMeters = widget.initial?.radiusMeters ?? 152.4; // ~500 ft
+    _type = widget.initial?.type ?? widget.type;
     // Only auto-locate for a brand-new place; editing keeps the saved pin.
     if (widget.initial == null) {
       _locateUser();
@@ -194,11 +196,11 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
           '${name.toLowerCase()}-'
               '${DateTime.now().millisecondsSinceEpoch}',
       name: name,
-      icon: widget.icon,
+      icon: Place.iconForType(_type),
       address: address.isEmpty ? context.l10n.pinnedLocation : address,
       position: _position,
       radiusMeters: _radiusMeters,
-      type: widget.initial?.type ?? widget.type,
+      type: _type,
       alertsOn: widget.initial?.alertsOn ?? false,
     );
     Navigator.of(context).pop(place);
@@ -264,10 +266,10 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                   child: Center(
                     child: Transform.translate(
                       offset: const Offset(0, -24),
-                      child: const Icon(
+                      child: Icon(
                         Icons.location_pin,
                         size: 48,
-                        color: AppColors.purple,
+                        color: BrandTheme.of(context).accentInk,
                       ),
                     ),
                   ),
@@ -314,7 +316,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                             height: 18,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: Colors.white,
+                              color: AppColors.onAccent,
                             ),
                           )
                         : const Icon(Icons.my_location),
@@ -343,6 +345,11 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
+                  _PlaceTypePicker(
+                    selected: _type,
+                    onChanged: (String type) => setState(() => _type = type),
+                  ),
+                  const SizedBox(height: 8),
                   TextField(
                     controller: _address,
                     textCapitalization: TextCapitalization.words,
@@ -354,7 +361,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                         : null,
                     decoration: InputDecoration(
                       labelText: GeocodingService.isEnabled
-                          ? 'Address'
+                          ? context.l10n.addressLabel
                           : context.l10n.addressOptional,
                       hintText: context.l10n.addressExample,
                       prefixIcon: const Icon(Icons.place_outlined),
@@ -385,9 +392,9 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                     GeocodingService.isEnabled
                         ? context.l10n.pickerHintWithSearch
                         : context.l10n.pickerHintNoSearch,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: AppColors.textMuted,
+                      color: BrandTheme.of(context).muted,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -403,10 +410,10 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                       const Spacer(),
                       Text(
                         _formatRadius(_radiusMeters),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.purple,
+                          color: BrandTheme.of(context).accentInk,
                         ),
                       ),
                     ],
@@ -444,6 +451,67 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// A horizontally scrolling row of icon chips for choosing a place's type.
+class _PlaceTypePicker extends StatelessWidget {
+  const _PlaceTypePicker({required this.selected, required this.onChanged});
+
+  final String selected;
+  final ValueChanged<String> onChanged;
+
+  static String label(BuildContext context, String type) {
+    switch (type) {
+      case 'home':
+        return context.l10n.placeHomeName;
+      case 'work':
+        return context.l10n.placeWorkName;
+      case 'school':
+        return context.l10n.placeSchoolName;
+      case 'gym':
+        return context.l10n.placeGymName;
+      case 'family':
+        return context.l10n.placeTypeFamily;
+      case 'friend':
+        return context.l10n.placeTypeFriend;
+      case 'store':
+        return context.l10n.placeTypeStore;
+      case 'health':
+        return context.l10n.placeTypeHealth;
+      case 'park':
+        return context.l10n.placeTypePark;
+      case 'food':
+        return context.l10n.placeTypeFood;
+      case 'worship':
+        return context.l10n.placeTypeWorship;
+      default:
+        return context.l10n.placeTypeOther;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: context.l10n.placeIconLabel,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            for (final String type in Place.types)
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: ChoiceChip(
+                  avatar: Icon(Place.iconForType(type), size: 18),
+                  label: Text(label(context, type)),
+                  selected: selected == type,
+                  onSelected: (_) => onChanged(type),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

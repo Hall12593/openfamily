@@ -110,19 +110,19 @@ class _CheckInScreenState extends State<CheckInScreen> {
         const SizedBox(height: 8),
         Text(
           context.l10n.checkInBody,
-          style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+          style: TextStyle(fontSize: 14, color: BrandTheme.of(context).muted),
         ),
         const SizedBox(height: 20),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: AppColors.surfaceTint,
+            color: BrandTheme.of(context).paper,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Row(
             children: [
-              const Icon(Icons.my_location, color: AppColors.purple, size: 24),
+              Icon(Icons.my_location, color: BrandTheme.of(context).accentInk, size: 24),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -135,9 +135,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     const SizedBox(height: 2),
                     Text(
                       _locationLabel ?? context.l10n.findingLocation,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textMuted,
+                        color: BrandTheme.of(context).muted,
                       ),
                     ),
                   ],
@@ -172,7 +172,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Colors.white,
+                      color: AppColors.onAccent,
                     ),
                   )
                 : Text(context.l10n.checkInTitle),
@@ -196,7 +196,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         Text(
           context.l10n.checkedInBody,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 15, color: AppColors.textMuted),
+          style: TextStyle(fontSize: 15, color: BrandTheme.of(context).muted),
         ),
         const SizedBox(height: 24),
         FilledButton(

@@ -49,9 +49,9 @@ class PeopleScreen extends StatelessWidget {
           IconButton(
             onPressed: _invite(context),
             tooltip: context.l10n.inviteSomeone,
-            icon: const Icon(
+            icon: Icon(
               Icons.person_add_alt_1,
-              color: AppColors.purple,
+              color: BrandTheme.of(context).accentInk,
             ),
           ),
         ],
@@ -133,7 +133,7 @@ class _RosterHeader extends StatelessWidget {
                 Text(
                   circleName,
                   style:
-                      const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                      TextStyle(fontSize: 13, color: BrandTheme.of(context).muted),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -175,8 +175,8 @@ class _EmptyPeople extends StatelessWidget {
                 color: AppColors.purple.withValues(alpha: 0.10),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.people_alt_outlined,
-                  size: 34, color: AppColors.purple),
+              child: Icon(Icons.people_alt_outlined,
+                  size: 34, color: BrandTheme.of(context).accentInk),
             ),
             const SizedBox(height: 16),
             Text(
@@ -188,7 +188,7 @@ class _EmptyPeople extends StatelessWidget {
             Text(
               context.l10n.peopleEmptyBody,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+              style: TextStyle(fontSize: 14, color: BrandTheme.of(context).muted),
             ),
             const SizedBox(height: 20),
             FilledButton.icon(

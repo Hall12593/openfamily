@@ -28,7 +28,7 @@ class CreateOrJoinCircleScreen extends StatelessWidget {
             children: [
               Text(
                 context.l10n.familyExplainer,
-                style: TextStyle(fontSize: 15, color: AppColors.textMuted),
+                style: TextStyle(fontSize: 15, color: BrandTheme.of(context).muted),
               ),
               const SizedBox(height: 24),
               _OptionCard(
@@ -85,7 +85,7 @@ class _OptionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surfaceTint,
+      color: BrandTheme.of(context).paper,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -101,7 +101,7 @@ class _OptionCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: AppColors.purple.withValues(alpha: 0.12),
                 ),
-                child: Icon(icon, color: AppColors.purple, size: 26),
+                child: Icon(icon, color: BrandTheme.of(context).accentInk, size: 26),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -118,15 +118,15 @@ class _OptionCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textMuted,
+                        color: BrandTheme.of(context).muted,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.textMuted),
+              Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
             ],
           ),
         ),

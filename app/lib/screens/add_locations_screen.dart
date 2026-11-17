@@ -327,7 +327,7 @@ class _AddLocationsScreenState extends State<AddLocationsScreen> {
                   const SizedBox(height: 8),
                   Text(
                     context.l10n.placesSharedNote,
-                    style: TextStyle(fontSize: 14, color: AppColors.textMuted),
+                    style: TextStyle(fontSize: 14, color: BrandTheme.of(context).muted),
                   ),
                   const SizedBox(height: 20),
                   for (final _PlacePreset preset in _presets) ...[
@@ -398,7 +398,7 @@ class _PlaceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final Place? p = place;
     return Material(
-      color: AppColors.surfaceTint,
+      color: BrandTheme.of(context).paper,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -414,7 +414,7 @@ class _PlaceCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: AppColors.purple.withValues(alpha: 0.12),
                 ),
-                child: Icon(preset.icon, color: AppColors.purple, size: 24),
+                child: Icon(preset.icon, color: BrandTheme.of(context).accentInk, size: 24),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -433,9 +433,9 @@ class _PlaceCard extends StatelessWidget {
                       p == null
                           ? preset.subtitle(context.l10n)
                           : '${p.address} · ${p.radiusLabel}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textMuted,
+                        color: BrandTheme.of(context).muted,
                       ),
                     ),
                   ],
@@ -451,7 +451,7 @@ class _PlaceCard extends StatelessWidget {
                     p.alertsOn
                         ? Icons.notifications_active
                         : Icons.notifications_off,
-                    color: p.alertsOn ? AppColors.purple : AppColors.textMuted,
+                    color: p.alertsOn ? BrandTheme.of(context).accentInk : BrandTheme.of(context).muted,
                   ),
                   onPressed: onToggleAlerts,
                 ),
@@ -484,7 +484,7 @@ class _CustomPlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surfaceTint,
+      color: BrandTheme.of(context).paper,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -500,7 +500,7 @@ class _CustomPlaceCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: AppColors.purple.withValues(alpha: 0.12),
                 ),
-                child: Icon(place.icon, color: AppColors.purple, size: 24),
+                child: Icon(place.icon, color: BrandTheme.of(context).accentInk, size: 24),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -517,9 +517,9 @@ class _CustomPlaceCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       '${place.address} · ${place.radiusLabel}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textMuted,
+                        color: BrandTheme.of(context).muted,
                       ),
                     ),
                   ],
@@ -533,7 +533,7 @@ class _CustomPlaceCard extends StatelessWidget {
                   place.alertsOn
                       ? Icons.notifications_active
                       : Icons.notifications_off,
-                  color: place.alertsOn ? AppColors.purple : AppColors.textMuted,
+                  color: place.alertsOn ? BrandTheme.of(context).accentInk : BrandTheme.of(context).muted,
                 ),
                 onPressed: onToggleAlerts,
               ),
@@ -568,7 +568,7 @@ class _AddCustomPlaceCard extends StatelessWidget {
           child: Row(
             children: [
               Icon(Icons.add_location_alt_outlined,
-                  color: AppColors.purple, size: 24),
+                  color: BrandTheme.of(context).accentInk, size: 24),
               SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -579,7 +579,7 @@ class _AddCustomPlaceCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.purple,
+                        color: BrandTheme.of(context).accentInk,
                       ),
                     ),
                     SizedBox(height: 2),
@@ -587,13 +587,13 @@ class _AddCustomPlaceCard extends StatelessWidget {
                       context.l10n.customPlaceHint,
                       style: TextStyle(
                         fontSize: 13,
-                        color: AppColors.textMuted,
+                        color: BrandTheme.of(context).muted,
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: AppColors.textMuted),
+              Icon(Icons.chevron_right, color: BrandTheme.of(context).muted),
             ],
           ),
         ),
