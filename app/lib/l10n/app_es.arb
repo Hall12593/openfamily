@@ -346,7 +346,7 @@
   "sosButtonSemantics": "SOS. Toca para enviar una alerta real. Mantén presionado para armarlo de forma discreta.",
   "sosHoldHint": "Sigue presionando… suelta para iniciar la cuenta regresiva",
   "sosTapHint": "Toca para enviar · mantén presionado para armar de forma discreta",
-  "pushHelpAndroid": "Android necesita la aplicación ntfy (UnifiedPush) para que las alertas lleguen cuando OpenFamily está cerrado. Al desactivarlo se anula el registro de este dispositivo.",
+  "pushHelpAndroid": "Las alertas llegan a este teléfono a través de tu servidor mientras el servicio en segundo plano de OpenFamily está activo. Una aplicación UnifiedPush como ntfy es opcional. Al desactivarlo se anula el registro de este dispositivo.",
   "pushHelpIos": "Se entregan a través de tu servidor mediante APNs. Al desactivarlo se anula el registro de este dispositivo.",
   "pushHelpWeb": "La entrega de notificaciones push no está disponible en la vista previa del navegador. Esta preferencia se recuerda para las aplicaciones instaladas.",
   "pushHelpDefault": "Al desactivarlo se anula el registro de este dispositivo en las notificaciones push.",

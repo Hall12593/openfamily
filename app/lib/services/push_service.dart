@@ -5,6 +5,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_client.dart';
+import 'device_channel.dart';
 import 'device_service.dart';
 import 'location_refresh_service.dart';
 import 'secure_url.dart';
@@ -93,6 +94,27 @@ class PushService {
     } else if (defaultTargetPlatform == TargetPlatform.android && !kIsWeb) {
       await _registerAndroid();
     }
+  }
+
+  /// Handles a message from the device channel: a location request is carried
+  /// out, anything else is shown as a notification.
+  static Future<void> handleDevicePush(DevicePushFrame frame) async {
+    final LocationRefreshResult result =
+        await LocationRefreshService.handlePush(frame.body);
+    if (result != LocationRefreshResult.notCommand) return;
+    await showDevicePush(frame);
+  }
+
+  /// Shows a device-channel message. The server sends the alert text as the
+  /// title (and sometimes a separate body).
+  static Future<void> showDevicePush(DevicePushFrame frame) async {
+    if (frame.silent) return;
+    final String title = frame.title.trim();
+    final String body = frame.body.trim();
+    await showForeground(
+      title.isEmpty || body.isEmpty ? 'OpenFamily' : title,
+      body.isNotEmpty ? body : (title.isNotEmpty ? title : CurrentL10n.value.newNotification),
+    );
   }
 
   /// Shows a local notification for a UnifiedPush message. A UnifiedPush

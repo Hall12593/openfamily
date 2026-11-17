@@ -10,6 +10,7 @@ import 'screens/welcome_screen.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
 import 'services/background_location_service.dart';
+import 'services/device_channel_host.dart';
 import 'services/push_service.dart';
 import 'services/server_config.dart';
 import 'services/session_gate.dart';
@@ -58,6 +59,7 @@ class _OpenFamilyAppState extends State<OpenFamilyApp> {
     // Stop background reporting: the session is dead and the background isolate
     // can no longer authenticate.
     BackgroundLocationService.stop();
+    DeviceChannelHost.stop();
     final NavigatorState? navigator = navigatorKey.currentState;
     if (navigator == null) return;
     navigator.pushAndRemoveUntil(
