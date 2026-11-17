@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../l10n/l10n.dart';
 import '../utils/units.dart';
 import '../models/member.dart';
 import '../services/app_config.dart';
@@ -69,14 +70,14 @@ class MemberProfileScreen extends StatelessWidget {
           const SizedBox(height: 24),
           _DetailRow(
             icon: Icon(_batteryIcon(), size: 22, color: _batteryColor()),
-            label: 'Battery',
+            label: context.l10n.batteryLabel,
             value: member.batteryPercent > 0
                 ? '${member.batteryPercent}%'
                 : 'Offline',
           ),
           _DetailRow(
             icon: const Icon(Icons.schedule, size: 22, color: AppColors.purple),
-            label: 'ETA',
+            label: context.l10n.etaLabel,
             value: member.eta ?? '—',
           ),
           _DetailRow(
@@ -87,7 +88,7 @@ class MemberProfileScreen extends StatelessWidget {
                   ? Theme.of(context).colorScheme.onSurfaceVariant
                   : null,
             ),
-            label: 'Status',
+            label: context.l10n.statusLabel,
             value: _drivingStatus(),
           ),
           _DetailRow(
@@ -96,7 +97,7 @@ class MemberProfileScreen extends StatelessWidget {
               size: 22,
               color: AppColors.accuracyBlue,
             ),
-            label: 'Accuracy',
+            label: context.l10n.accuracyLabel,
             value: _accuracyLabel,
           ),
           _DetailRow(
@@ -105,7 +106,7 @@ class MemberProfileScreen extends StatelessWidget {
               size: 22,
               color: AppColors.purple,
             ),
-            label: 'Address',
+            label: context.l10n.addressLabel,
             value: member.address,
           ),
           const SizedBox(height: 16),
@@ -209,7 +210,7 @@ class _LocationRefreshButtonState extends State<_LocationRefreshButton> {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.refresh),
-          label: const Text('Update location'),
+          label: Text(context.l10n.updateLocation),
         ),
         if (_status != null) ...<Widget>[
           const SizedBox(height: 6),
@@ -365,7 +366,7 @@ class _DayDetailButton extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  'Day Detail',
+                  context.l10n.dayDetailTitle,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -374,7 +375,7 @@ class _DayDetailButton extends StatelessWidget {
                 ),
               ),
               Text(
-                'Location history',
+                context.l10n.locationHistory,
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,

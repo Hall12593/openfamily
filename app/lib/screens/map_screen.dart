@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' hide Circle;
 
+import '../l10n/l10n.dart';
 import '../models/member.dart';
 import '../services/api_client.dart';
 import '../services/app_config.dart';
@@ -251,7 +252,7 @@ class _MapScreenState extends State<MapScreen>
     final bool? open = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Keep background updates reliable'),
+        title: Text(context.l10n.backgroundUpdatesTitle),
         content: const Text(
           'To keep your location fresh when OpenFamily is closed, Android '
           'may need OpenFamily exempted from battery optimization. Otherwise '
@@ -260,11 +261,11 @@ class _MapScreenState extends State<MapScreen>
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Not now'),
+            child: Text(context.l10n.actionNotNow),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Open settings'),
+            child: Text(context.l10n.openSettingsLower),
           ),
         ],
       ),
@@ -583,8 +584,8 @@ class _MapScreenState extends State<MapScreen>
               children: [
                 _AddActionTile(
                   icon: Icons.check_circle_outline,
-                  title: 'Check In',
-                  subtitle: 'Share your location with your family',
+                  title: context.l10n.checkInTitle,
+                  subtitle: context.l10n.checkInSubtitle,
                   onTap: () {
                     Navigator.of(context).pop();
                     _openCheckIn();
@@ -592,8 +593,8 @@ class _MapScreenState extends State<MapScreen>
                 ),
                 _AddActionTile(
                   icon: Icons.campaign_outlined,
-                  title: 'Help Alert',
-                  subtitle: 'Ask your family for help',
+                  title: context.l10n.helpAlertTitle,
+                  subtitle: context.l10n.helpAlertSubtitle,
                   onTap: () {
                     Navigator.of(context).pop();
                     _openHelpAlert();
@@ -601,8 +602,8 @@ class _MapScreenState extends State<MapScreen>
                 ),
                 _AddActionTile(
                   icon: Icons.person_add_alt_1,
-                  title: 'Invite',
-                  subtitle: 'Send a code to invite someone to your family',
+                  title: context.l10n.actionInvite,
+                  subtitle: context.l10n.inviteTooltip,
                   onTap: () {
                     Navigator.of(context).pop();
                     _openAddPerson();
@@ -772,7 +773,7 @@ class _MapScreenState extends State<MapScreen>
             child: Center(
               child: FloatingActionButton(
                 onPressed: _showAddActions,
-                tooltip: 'Add — Check In / Help Alert / Invite',
+                tooltip: context.l10n.addMenuLabel,
                 child: const Icon(Icons.add),
               ),
             ),
@@ -915,7 +916,7 @@ class _LocateButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: 'Center on my location',
+      message: context.l10n.centerOnMe,
       child: Material(
         color: BrandTheme.of(context).sheet,
         shape: const CircleBorder(),
@@ -1031,7 +1032,7 @@ class _LocationOffBanner extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            TextButton(onPressed: onEnable, child: const Text('Enable')),
+            TextButton(onPressed: onEnable, child: Text(context.l10n.actionEnable)),
           ],
         ),
       ),
@@ -1079,7 +1080,7 @@ class _LoadErrorCard extends StatelessWidget {
                 style: FilledButton.styleFrom(
                   backgroundColor: AppColors.purple,
                 ),
-                child: const Text('Retry'),
+                child: Text(context.l10n.actionRetry),
               ),
             ],
           ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../l10n/l10n.dart';
 import '../utils/units.dart';
 import '../models/place.dart';
 import '../services/app_config.dart';
@@ -132,8 +133,8 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
     setState(() => _searching = false);
     if (result == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Couldn\'t find that address. Try a nearby landmark.'),
+        SnackBar(
+          content: Text(context.l10n.addressNotFound),
         ),
       );
       return;
@@ -183,7 +184,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
       // The backend rejects places without a name, so require one here
       // instead of silently saving a blank label.
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Add a name for this place first.')),
+        SnackBar(content: Text(context.l10n.addNameFirst)),
       );
       return;
     }
@@ -213,7 +214,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
         actions: [
           TextButton(
             onPressed: _save,
-            child: const Text('Save'),
+            child: Text(context.l10n.actionSave),
           ),
         ],
       ),
@@ -306,7 +307,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                   child: FloatingActionButton.small(
                     heroTag: 'place-picker-locate',
                     onPressed: _locating ? null : _locateUser,
-                    tooltip: 'Use my location',
+                    tooltip: context.l10n.useMyLocation,
                     child: _locating
                         ? const SizedBox(
                             width: 18,
@@ -334,9 +335,9 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                     controller: _name,
                     textCapitalization: TextCapitalization.words,
                     textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      hintText: 'e.g. Grandma',
+                    decoration: InputDecoration(
+                      labelText: context.l10n.nameLabel,
+                      hintText: context.l10n.nameExampleGrandma,
                       prefixIcon: const Icon(Icons.label_outline),
                       border: const OutlineInputBorder(),
                     ),
@@ -355,7 +356,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                       labelText: GeocodingService.isEnabled
                           ? 'Address'
                           : 'Address (optional)',
-                      hintText: 'e.g. 123 Maple St',
+                      hintText: context.l10n.addressExample,
                       prefixIcon: const Icon(Icons.place_outlined),
                       border: const OutlineInputBorder(),
                       suffixIcon: !GeocodingService.isEnabled
@@ -373,7 +374,7 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                                 )
                               : IconButton(
                                   icon: const Icon(Icons.search),
-                                  tooltip: 'Search address',
+                                  tooltip: context.l10n.searchAddress,
                                   onPressed: () =>
                                       _searchAddress(_address.text),
                                 ),
@@ -395,8 +396,8 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Text(
-                        'Radius',
+                      Text(
+                        context.l10n.radiusLabelTitle,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
@@ -436,9 +437,9 @@ class _PlacePickerScreenState extends State<PlacePickerScreen> {
                   const SizedBox(height: 16),
                   FilledButton(
                     onPressed: _save,
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Text('Save place'),
+                      child: Text(context.l10n.savePlace),
                     ),
                   ),
                 ],

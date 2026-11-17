@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/l10n.dart';
 import '../utils/units.dart';
 import '../models/member.dart';
 import '../theme/app_theme.dart';
@@ -47,7 +48,7 @@ class MemberTile extends StatelessWidget {
                     spacing: 6,
                     runSpacing: 4,
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    children: _statusChips(),
+                    children: _statusChips(context),
                   ),
                   const SizedBox(height: 4),
                   // Address on its own line.
@@ -90,7 +91,7 @@ class MemberTile extends StatelessWidget {
   }
 
   /// Builds the distinct status chips: battery %, ETA, and driving speed.
-  List<Widget> _statusChips() {
+  List<Widget> _statusChips(BuildContext context) {
     final List<Widget> chips = <Widget>[];
 
     if (member.batteryPercent > 0) {
@@ -103,10 +104,10 @@ class MemberTile extends StatelessWidget {
       );
     } else if (member.status == MemberStatus.stopped) {
       chips.add(
-        const _StatusChip(
+        _StatusChip(
           icon: Icons.battery_unknown,
           color: AppColors.statusGrey,
-          label: 'Offline',
+          label: context.l10n.offlineLabel,
         ),
       );
     }

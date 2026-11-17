@@ -223,7 +223,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (!mounted) return;
     if (!saved) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not save the lock delay.')),
+        SnackBar(content: Text(context.l10n.lockDelaySaveFailed)),
       );
       return;
     }
@@ -275,8 +275,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (!mounted) return;
       setState(() => _loggingOut = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not log out safely. Please try again.'),
+        SnackBar(
+          content: Text(context.l10n.logOutFailed),
         ),
       );
       return;
@@ -295,18 +295,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Change server?'),
-          content: const Text(
-            'You will be signed out. Enter the new server address on the next screen.',
+          title: Text(context.l10n.changeServerQuestion),
+          content: Text(context.l10n.changeServerBody,
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.actionCancel),
             ),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Continue'),
+              child: Text(context.l10n.actionContinue),
             ),
           ],
         );
@@ -318,8 +317,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Could not sign out safely. Please try again.'),
+        SnackBar(
+          content: Text(context.l10n.signOutFailed),
         ),
       );
       return;
@@ -339,7 +338,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete account?'),
+          title: Text(context.l10n.deleteAccountQuestion),
           content: const Text(
             'This permanently deletes your account, devices, and location '
             'history on this server. If you are the last admin of a family '
@@ -348,12 +347,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
+              child: Text(context.l10n.actionCancel),
             ),
             FilledButton(
               style: FilledButton.styleFrom(backgroundColor: AppColors.sosRed),
               onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Delete'),
+              child: Text(context.l10n.actionDelete),
             ),
           ],
         );
@@ -383,7 +382,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       if (!mounted) return;
       setState(() => _deletingAccount = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not delete the account. Try again.')),
+        SnackBar(content: Text(context.l10n.deleteAccountFailed)),
       );
       return;
     }
@@ -397,14 +396,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(context.l10n.settingsTitle)),
       body: DotGridBackground(
         child: ListView(
           children: [
             const _SectionHeader('Account'),
           ListTile(
             leading: const Icon(Icons.person_outline, color: AppColors.purple),
-            title: const Text('Profile'),
+            title: Text(context.l10n.profileTitle),
             trailing:
                 const Icon(Icons.chevron_right, color: AppColors.textMuted),
             onTap: () => Navigator.of(context).push(
@@ -413,7 +412,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.group_outlined, color: AppColors.purple),
-            title: const Text('Family'),
+            title: Text(context.l10n.familyLabel),
             trailing:
                 const Icon(Icons.chevron_right, color: AppColors.textMuted),
             onTap: () => Navigator.of(context).push(
@@ -422,7 +421,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ListTile(
             leading: const Icon(Icons.dns_outlined, color: AppColors.purple),
-            title: const Text('Server'),
+            title: Text(context.l10n.serverLabel),
             subtitle: Text(
               ServerConfig.instance.apiBaseUrl.isEmpty
                   ? 'Not set'
@@ -444,7 +443,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Icons.fingerprint,
               color: AppColors.purple,
             ),
-            title: const Text('Biometric unlock'),
+            title: Text(context.l10n.biometricUnlock),
             subtitle: Text(
               _biometricSubtitle,
               style: _biometricError == null
@@ -466,7 +465,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.lock_clock_outlined,
                 color: AppColors.purple,
               ),
-              title: const Text('Lock delay'),
+              title: Text(context.l10n.lockDelay),
               subtitle: const Text(
                 'How long the app can stay in the background before it '
                 'locks. Longer delays are convenient but let the recents '
@@ -476,26 +475,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 value: _lockGrace,
                 underline: const SizedBox.shrink(),
                 onChanged: _biometricUpdating ? null : _setLockGrace,
-                items: const [
+                items: [
                   DropdownMenuItem(
                     value: Duration.zero,
-                    child: Text('Immediately'),
+                    child: Text(context.l10n.lockImmediately),
                   ),
                   DropdownMenuItem(
                     value: Duration(seconds: 30),
-                    child: Text('30 seconds'),
+                    child: Text(context.l10n.lock30Seconds),
                   ),
                   DropdownMenuItem(
                     value: Duration(minutes: 1),
-                    child: Text('1 minute'),
+                    child: Text(context.l10n.lock1Minute),
                   ),
                   DropdownMenuItem(
                     value: Duration(minutes: 5),
-                    child: Text('5 minutes'),
+                    child: Text(context.l10n.lock5Minutes),
                   ),
                   DropdownMenuItem(
                     value: Duration(minutes: 15),
-                    child: Text('15 minutes'),
+                    child: Text(context.l10n.lock15Minutes),
                   ),
                 ],
               ),
@@ -506,9 +505,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SwitchListTile(
             secondary:
                 const Icon(Icons.location_on_outlined, color: AppColors.purple),
-            title: const Text('Location sharing'),
-            subtitle: const Text(
-              'When off, this device stops reporting your position.',
+            title: Text(context.l10n.locationSharing),
+            subtitle: Text(context.l10n.locationSharingHelp,
             ),
             value: _locationSharing,
             onChanged: _locationSharingLoading ? null : _setLocationSharing,
@@ -519,7 +517,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Icons.battery_alert_outlined,
                 color: AppColors.purple,
               ),
-              title: const Text('Background updates'),
+              title: Text(context.l10n.backgroundUpdates),
               subtitle: const Text(
                 'Let OpenFamily run freely so your location stays fresh '
                 'when the app is closed.',
@@ -533,7 +531,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SwitchListTile(
             secondary: const Icon(Icons.notifications_outlined,
                 color: AppColors.purple),
-            title: const Text('Push notifications'),
+            title: Text(context.l10n.pushNotifications),
             subtitle: Text(pushNotificationsSubtitle(isWeb: kIsWeb)),
             value: _notifications,
             onChanged: _notificationsLoading ? null : _setPushNotifications,
@@ -542,7 +540,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const _SectionHeader('About'),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined, color: AppColors.purple),
-            title: const Text('Privacy policy'),
+            title: Text(context.l10n.privacyPolicy),
             trailing: const Icon(Icons.chevron_right, color: AppColors.textMuted),
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute<void>(builder: (_) => const PrivacyPolicyScreen()),
@@ -556,8 +554,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const Divider(height: 1),
           ListTile(
             leading: const Icon(Icons.logout, color: AppColors.sosRed),
-            title: const Text(
-              'Log Out',
+            title: Text(
+              context.l10n.actionLogOut,
               style: TextStyle(color: AppColors.sosRed),
             ),
             enabled: !_loggingOut && !_deletingAccount,
@@ -565,8 +563,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
             ListTile(
               leading: const Icon(Icons.delete_forever, color: AppColors.sosRed),
-              title: const Text(
-                'Delete account',
+              title: Text(
+                context.l10n.deleteAccount,
                 style: TextStyle(color: AppColors.sosRed),
               ),
               enabled: !_loggingOut && !_deletingAccount,
@@ -615,7 +613,7 @@ class _AppearanceTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Theme',
+                context.l10n.themeTitle,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 4),
@@ -632,20 +630,20 @@ class _AppearanceTile extends StatelessWidget {
               const SizedBox(height: 12),
               SegmentedButton<ThemePreference>(
                 showSelectedIcon: false,
-                segments: const [
+                segments: [
                   ButtonSegment<ThemePreference>(
                     value: ThemePreference.system,
-                    label: Text('System'),
+                    label: Text(context.l10n.themeSystem),
                     icon: Icon(Icons.brightness_auto, size: 18),
                   ),
                   ButtonSegment<ThemePreference>(
                     value: ThemePreference.light,
-                    label: Text('Light'),
+                    label: Text(context.l10n.themeLight),
                     icon: Icon(Icons.light_mode_outlined, size: 18),
                   ),
                   ButtonSegment<ThemePreference>(
                     value: ThemePreference.dark,
-                    label: Text('Dark'),
+                    label: Text(context.l10n.themeDark),
                     icon: Icon(Icons.dark_mode_outlined, size: 18),
                   ),
                 ],
@@ -677,12 +675,12 @@ class _UnitsTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Units',
+                context.l10n.unitsSetting,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 4),
               Text(
-                'Distances and speeds: kilometers and km/h, or miles and mph.',
+                context.l10n.unitsSettingHelp,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
@@ -690,18 +688,18 @@ class _UnitsTile extends StatelessWidget {
               const SizedBox(height: 12),
               SegmentedButton<UnitPreference>(
                 showSelectedIcon: false,
-                segments: const [
+                segments: [
                   ButtonSegment<UnitPreference>(
                     value: UnitPreference.system,
-                    label: Text('Auto'),
+                    label: Text(context.l10n.unitsAuto),
                   ),
                   ButtonSegment<UnitPreference>(
                     value: UnitPreference.metric,
-                    label: Text('Metric'),
+                    label: Text(context.l10n.unitsMetric),
                   ),
                   ButtonSegment<UnitPreference>(
                     value: UnitPreference.imperial,
-                    label: Text('Imperial'),
+                    label: Text(context.l10n.unitsImperial),
                   ),
                 ],
                 selected: <UnitPreference>{preference},
