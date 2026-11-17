@@ -3,10 +3,11 @@ import 'dart:ui' show FontFeature;
 
 import 'package:flutter/material.dart';
 
-import '../utils/units.dart';
+import '../l10n/l10n.dart';
 import '../models/member.dart';
 import '../services/member_avatar_cache.dart';
 import '../theme/app_theme.dart';
+import '../utils/units.dart';
 import 'movement_icon.dart';
 
 /// A circular avatar bubble pinned to a member's location on the map.
@@ -125,7 +126,7 @@ class MemberAvatarBubble extends StatelessWidget {
     final StringBuffer sb = StringBuffer(member.name);
     sb.write(' — ${member.status.description}');
     if (member.movement != MovementType.none) {
-      sb.write(' · ${member.isSpeeding ? 'Speeding' : member.movement.label}');
+      sb.write(' · ${member.isSpeeding ? CurrentL10n.value.speedingLabel : member.movement.label}');
       if (member.hasDrivingSpeed) {
         sb.write(
           ' ${Units.speed(member.speedMps!, metric: Units.current)}',

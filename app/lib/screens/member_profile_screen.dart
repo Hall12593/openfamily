@@ -73,7 +73,7 @@ class MemberProfileScreen extends StatelessWidget {
             label: context.l10n.batteryLabel,
             value: member.batteryPercent > 0
                 ? '${member.batteryPercent}%'
-                : 'Offline',
+                : context.l10n.offlineStatus,
           ),
           _DetailRow(
             icon: const Icon(Icons.schedule, size: 22, color: AppColors.purple),
@@ -89,7 +89,7 @@ class MemberProfileScreen extends StatelessWidget {
                   : null,
             ),
             label: context.l10n.statusLabel,
-            value: _drivingStatus(),
+            value: _drivingStatus(context),
           ),
           _DetailRow(
             icon: const Icon(
@@ -134,13 +134,15 @@ class MemberProfileScreen extends StatelessWidget {
     return AppColors.statusGreen;
   }
 
-  String _drivingStatus() {
+  String _drivingStatus(BuildContext context) {
     if (member.hasDrivingSpeed) {
       final String speed =
           Units.speed(member.speedMps!, metric: Units.current);
-      return member.isSpeeding ? 'Speeding · $speed' : 'Driving · $speed';
+      return member.isSpeeding
+          ? context.l10n.speedingWithSpeed(speed)
+          : context.l10n.drivingWithSpeed(speed);
     }
-    if (member.movement == MovementType.none) return 'Not moving';
+    if (member.movement == MovementType.none) return context.l10n.notMoving;
     return member.movement.label;
   }
 

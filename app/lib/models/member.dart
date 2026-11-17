@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../l10n/l10n.dart';
 import '../theme/app_theme.dart';
 
 /// Speed (m/s) at or above which a driving member is shown as a
@@ -276,15 +277,15 @@ extension MemberStatusColor on MemberStatus {
   String get label {
     switch (this) {
       case MemberStatus.normal:
-        return 'Live';
+        return CurrentL10n.value.statusLive;
       case MemberStatus.warning:
-        return 'Low battery / accuracy';
+        return CurrentL10n.value.statusLowBatteryAccuracy;
       case MemberStatus.gpsIssue:
-        return 'GPS issue';
+        return CurrentL10n.value.statusGpsIssue;
       case MemberStatus.stopped:
-        return 'Updates stopped';
+        return CurrentL10n.value.statusUpdatesStopped;
       case MemberStatus.error:
-        return 'Location error';
+        return CurrentL10n.value.statusLocationError;
     }
   }
 
@@ -292,15 +293,15 @@ extension MemberStatusColor on MemberStatus {
   String get description {
     switch (this) {
       case MemberStatus.normal:
-        return 'Live — real-time, accurate location';
+        return CurrentL10n.value.statusDescLive;
       case MemberStatus.warning:
-        return 'Low battery or location-accuracy issue';
+        return CurrentL10n.value.statusDescWarning;
       case MemberStatus.gpsIssue:
-        return 'GPS accuracy issue — approximate location';
+        return CurrentL10n.value.statusDescGpsIssue;
       case MemberStatus.stopped:
-        return 'Location updates stopped';
+        return CurrentL10n.value.statusDescStopped;
       case MemberStatus.error:
-        return 'Location error';
+        return CurrentL10n.value.statusDescError;
     }
   }
 }
@@ -347,21 +348,21 @@ extension MovementTypeIcon on MovementType {
   String get label {
     switch (this) {
       case MovementType.car:
-        return 'Driving';
+        return CurrentL10n.value.movementDriving;
       case MovementType.bike:
-        return 'Biking';
+        return CurrentL10n.value.movementBiking;
       case MovementType.boat:
-        return 'On a boat';
+        return CurrentL10n.value.movementBoat;
       case MovementType.plane:
-        return 'Flying';
+        return CurrentL10n.value.movementFlying;
       case MovementType.home:
-        return 'At Home';
+        return CurrentL10n.value.movementAtHome;
       case MovementType.work:
-        return 'At Work';
+        return CurrentL10n.value.movementAtWork;
       case MovementType.gym:
-        return 'At Gym';
+        return CurrentL10n.value.movementAtGym;
       case MovementType.star:
-        return 'Most-visited place';
+        return CurrentL10n.value.movementMostVisited;
       case MovementType.none:
         return '';
     }

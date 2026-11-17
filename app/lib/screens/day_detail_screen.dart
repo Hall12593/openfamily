@@ -133,7 +133,7 @@ class _DayDetailScreenState extends State<DayDetailScreen> {
       );
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${result.name} saved for the family')),
+        SnackBar(content: Text(context.l10n.placeSavedForFamily(result.name))),
       );
       await _load();
     } catch (e) {

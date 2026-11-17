@@ -159,7 +159,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(context.l10n.deletePlaceQuestion),
-        content: Text('Remove "${place.name}" from your family\'s places?'),
+        content: Text(context.l10n.removePlaceBody(place.name)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
