@@ -334,8 +334,8 @@ export function MapView(props: MapViewProps): JSX.Element {
 
   // Shared requester used by both the member card button and the automatic
   // refresh of quiet members after load. The backend authorizes same-family
-  // membership (and reports conflicts/unreachability), so this works from
-  // either portal scope.
+  // membership or platform admin (and reports conflicts/unreachability), so
+  // this works from either portal scope.
   const requestLocation = useCallback(
     async (memberId: string): Promise<{ ok: boolean; message: string }> => {
       if (!token) return { ok: false, message: t("Not signed in.") };

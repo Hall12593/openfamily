@@ -101,6 +101,8 @@ type locationRequestCommand struct {
 
 // RequestMemberLocation asks a family member's device (Android via UnifiedPush,
 // iOS via a silent APNs command) for one fresh fix.
+// The caller must share a family with the member, or be a platform admin (the
+// admin panel lists every family's members).
 // The command contains no location or requester information and expires after
 // 30 seconds. The app still enforces its own sharing and permission settings.
 func (s *Server) RequestMemberLocation(w http.ResponseWriter, r *http.Request) {
@@ -122,8 +124,9 @@ func (s *Server) RequestMemberLocation(w http.ResponseWriter, r *http.Request) {
 			FROM users requester
 			JOIN users target ON target.id = $2
 			WHERE requester.id = $1
-			  AND requester.family_id IS NOT NULL
-			  AND target.family_id = requester.family_id
+			  AND (requester.platform_admin
+			       OR (requester.family_id IS NOT NULL
+			           AND target.family_id = requester.family_id))
 		)`, claims.UserID, targetID).Scan(&isFamilyMember)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to verify family member")
